@@ -15,6 +15,7 @@ public class ScreenManager extends JFrame {
     OffScreen off = new OffScreen(this);
     MenuScreen menu = new MenuScreen(this);
     MapScreen map = new MapScreen(this);
+    SpeechScreen speech = new SpeechScreen(this);
 
     public static void main(String[] args) {
         try {
@@ -38,7 +39,7 @@ public class ScreenManager extends JFrame {
 
         //Creates the onOffButton
         onOffButton.setBounds(234, 106, 45, 45);
-        //onOffButton.setBorder(null);
+        onOffButton.setBorder(null);
         onOffButton.addActionListener(e -> {
             try {
                 onOffPressed();
@@ -46,13 +47,13 @@ public class ScreenManager extends JFrame {
                 ex.printStackTrace();
             }
         });
-        plusButton.setOpaque(false);
-        plusButton.setContentAreaFilled(false);
+        onOffButton.setOpaque(false);
+        onOffButton.setContentAreaFilled(false);
         add(onOffButton);
 
         //Creates the plusButton
         plusButton.setBounds(10, 60, 30, 55);
-        //plusButton.setBorder(null);
+        plusButton.setBorder(null);
         plusButton.addActionListener(e -> plusButtonPressed());
         plusButton.setOpaque(false);
         plusButton.setContentAreaFilled(false);
@@ -60,7 +61,7 @@ public class ScreenManager extends JFrame {
 
         //Creates the minusButton
         minusButton.setBounds(10, 115, 30, 55);
-        //minusButton.setBorder(null);
+        minusButton.setBorder(null);
         minusButton.addActionListener(e -> minusButtonPressed());
         minusButton.setOpaque(false);
         minusButton.setContentAreaFilled(false);
@@ -68,7 +69,7 @@ public class ScreenManager extends JFrame {
 
         //Creates the selectButton
         selectButton.setBounds(10, 190, 30, 65);
-        //selectButton.setBorder(null);
+        selectButton.setBorder(null);
         selectButton.addActionListener(e -> selectButtonPressed());
         selectButton.setOpaque(false);
         selectButton.setContentAreaFilled(false);
@@ -76,7 +77,7 @@ public class ScreenManager extends JFrame {
 
         //Creates the menuButton
         menuButton.setBounds(320, 70, 30, 65);
-        //menuButton.setBorder(null);
+        menuButton.setBorder(null);
         menuButton.addActionListener(e -> menuButtonPressed());
         menuButton.setOpaque(false);
         menuButton.setContentAreaFilled(false);

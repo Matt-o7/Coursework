@@ -157,10 +157,12 @@ class MenuScreen extends Screen {
         switch (selectedItem) {
             case "whereTo": {
                 System.out.println("Where To clicked");
+                //sm.changeCurrentScreen(sm.whereTo);
                 break;
             }
             case "tripComputer": {
                 System.out.println("Trip Computer clicked");
+                //sm.changeCurrentScreen(sm.tripComp);
                 break;
             }
             case "map": {
@@ -170,14 +172,17 @@ class MenuScreen extends Screen {
             }
             case "speech": {
                 System.out.println("Speech clicked");
+                sm.changeCurrentScreen(sm.speech);
                 break;
             }
             case "satellite": {
                 System.out.println("Satellite clicked");
+                //sm.changeCurrentScreen(sm.satellite);
                 break;
             }
             case "about": {
                 System.out.println("About clicked");
+                //sm.changeCurrentScreen(sm.about);
                 break;
             }
         }
