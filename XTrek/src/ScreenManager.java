@@ -15,7 +15,8 @@ public class ScreenManager extends JFrame {
     OffScreen off = new OffScreen(this);
     MenuScreen menu = new MenuScreen(this);
     MapScreen map = new MapScreen(this);
-    SpeechScreen speech = new SpeechScreen(this);
+    SatelliteScreen satellite = new SatelliteScreen(this);
+    AboutScreen about = new AboutScreen(this);
 
     public static void main(String[] args) {
         try {

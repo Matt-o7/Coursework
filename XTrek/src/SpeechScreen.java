@@ -23,7 +23,7 @@ public class SpeechScreen extends Screen {
 
     @Override
     void menu() {
-
+        sm.changeCurrentScreen(sm.menu);
     }
 
     @Override
@@ -34,6 +34,6 @@ public class SpeechScreen extends Screen {
 
     @Override
     void onOff() {
-        sm.changeCurrentScreen(sm.menu);
+        sm.changeCurrentScreen(sm.off);
     }
 }
