@@ -13,20 +13,20 @@ class MenuScreen extends Screen {
 
     private String selectedItem;
 
-    private ImageIcon imgWhereTo = new ImageIcon(this.getClass().getResource("images/whereTo.png"));
-    private ImageIcon imgWhereTo_selected = new ImageIcon(this.getClass().getResource("images/whereTo_selected.png"));
-    private ImageIcon imgTripComputer = new ImageIcon(this.getClass().getResource("images/tripComputer.png"));
-    private ImageIcon imgTripComputer_selected = new ImageIcon(this.getClass().getResource("images/tripComputer_selected.png"));
+    private ImageIcon imgWhereTo = new ImageIcon(getClass().getResource("images/whereTo.png"));
+    private ImageIcon imgWhereTo_selected = new ImageIcon(getClass().getResource("images/whereTo_selected.png"));
+    private ImageIcon imgTripComputer = new ImageIcon(getClass().getResource("images/tripComputer.png"));
+    private ImageIcon imgTripComputer_selected = new ImageIcon(getClass().getResource("images/tripComputer_selected.png"));
 
-    private ImageIcon imgMap = new ImageIcon(this.getClass().getResource("images/map.png"));
-    private ImageIcon imgMap_selected = new ImageIcon(this.getClass().getResource("images/map_selected.png"));
-    private ImageIcon imgSpeech = new ImageIcon(this.getClass().getResource("images/speech.png"));
-    private ImageIcon imgSpeech_selected = new ImageIcon(this.getClass().getResource("images/speech_selected.png"));
+    private ImageIcon imgMap = new ImageIcon(getClass().getResource("images/map.png"));
+    private ImageIcon imgMap_selected = new ImageIcon(getClass().getResource("images/map_selected.png"));
+    private ImageIcon imgSpeech = new ImageIcon(getClass().getResource("images/speech.png"));
+    private ImageIcon imgSpeech_selected = new ImageIcon(getClass().getResource("images/speech_selected.png"));
 
-    private ImageIcon imgSatellite = new ImageIcon(this.getClass().getResource("images/satellite.png"));
-    private ImageIcon imgSatellite_selected = new ImageIcon(this.getClass().getResource("images/satellite_selected.png"));
-    private ImageIcon imgAbout = new ImageIcon(this.getClass().getResource("images/about.png"));
-    private ImageIcon imgAbout_selected = new ImageIcon(this.getClass().getResource("images/about_selected.png"));
+    private ImageIcon imgSatellite = new ImageIcon(getClass().getResource("images/satellite.png"));
+    private ImageIcon imgSatellite_selected = new ImageIcon(getClass().getResource("images/satellite_selected.png"));
+    private ImageIcon imgAbout = new ImageIcon(getClass().getResource("images/about.png"));
+    private ImageIcon imgAbout_selected = new ImageIcon(getClass().getResource("images/about_selected.png"));
 
     MenuScreen(ScreenManager sm) {
         super(sm);
@@ -186,7 +186,7 @@ class MenuScreen extends Screen {
         switch (selectedItem) {
             case "whereTo": {
                 System.out.println("Where To clicked");
-                //sm.changeCurrentScreen(sm.whereTo);
+                sm.changeCurrentScreen(sm.whereTo);
                 break;
             }
             case "tripComputer": {
@@ -201,7 +201,7 @@ class MenuScreen extends Screen {
             }
             case "speech": {
                 System.out.println("Speech clicked");
-                //sm.changeCurrentScreen(sm.speech);
+                sm.changeCurrentScreen(sm.speech);
                 break;
             }
             case "satellite": {
