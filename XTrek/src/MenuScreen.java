@@ -67,29 +67,13 @@ class MenuScreen extends Screen {
 
     @Override
     void showScreen() {
-        //Creates the whereTo image (Default Selected)
         whereTo.setIcon(imgWhereTo_selected);
         selectedItem = "whereTo";
-
-        //Creates the tripComputer image
         tripComputer.setIcon(imgTripComputer);
-        add(tripComputer);
-
-        //Creates the map image
         map.setIcon(imgMap);
-        add(map);
-
-        //Creates the speech image
         speech.setIcon(imgSpeech);
-        add(speech);
-
-        //Creates the satellite image
         satellite.setIcon(imgSatellite);
-        add(satellite);
-
-        //Creates the about image
         about.setIcon(imgAbout);
-        add(about);
     }
 
     @Override

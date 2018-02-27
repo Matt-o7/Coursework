@@ -19,6 +19,7 @@ public class ScreenManager extends JFrame {
     SatelliteScreen satellite = new SatelliteScreen(this);
     SpeechScreen speech = new SpeechScreen(this);
     AboutScreen about = new AboutScreen(this);
+    //TripScreen tripComp = new TripScreen(this);
 
     public static void main(String[] args) {
         try {
