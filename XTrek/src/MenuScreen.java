@@ -1,118 +1,151 @@
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
-import java.io.IOException;
+
 
 class MenuScreen extends Screen {
-    private JLabel whereTo = new JLabel();
-    private JLabel tripComputer = new JLabel();
-    private JLabel map = new JLabel();
-    private JLabel speech = new JLabel();
-    private JLabel satellite = new JLabel();
-    private JLabel about = new JLabel();
+    public enum Selection {
+        whereTo,
+        tripComputer,
+        map,
+        speech,
+        satellite,
+        about;
 
-    private String selectedItem;
+//        int selected = 0;
+//        private Selection vals[] = values();
+//        public Selection getSelected(){
+//            return vals[selected];
+//        }
+//        public Selection next()
+//        {
+//            return vals[(this.ordinal()+1) % vals.length];
+//        }
+    }
+    private JLabel whereToLabel = new JLabel();
+    private JLabel tripComputerLabel = new JLabel();
+    private JLabel mapLabel = new JLabel();
+    private JLabel speechLabel = new JLabel();
+    private JLabel satelliteLabel = new JLabel();
+    private JLabel aboutLabel = new JLabel();
 
-    private ImageIcon imgWhereTo = new ImageIcon(getClass().getResource("images/whereTo.png"));
-    private ImageIcon imgWhereTo_selected = new ImageIcon(getClass().getResource("images/whereTo_selected.png"));
-    private ImageIcon imgTripComputer = new ImageIcon(getClass().getResource("images/tripComputer.png"));
-    private ImageIcon imgTripComputer_selected = new ImageIcon(getClass().getResource("images/tripComputer_selected.png"));
+    Selection selectedItem = Selection.whereTo;
 
-    private ImageIcon imgMap = new ImageIcon(getClass().getResource("images/map.png"));
-    private ImageIcon imgMap_selected = new ImageIcon(getClass().getResource("images/map_selected.png"));
-    private ImageIcon imgSpeech = new ImageIcon(getClass().getResource("images/speech.png"));
-    private ImageIcon imgSpeech_selected = new ImageIcon(getClass().getResource("images/speech_selected.png"));
+    private ImageIcon imgWhereTo;
+    private ImageIcon imgWhereTo_selected;
+    private ImageIcon imgTripComputer;
+    private ImageIcon imgTripComputer_selected;
 
-    private ImageIcon imgSatellite = new ImageIcon(getClass().getResource("images/satellite.png"));
-    private ImageIcon imgSatellite_selected = new ImageIcon(getClass().getResource("images/satellite_selected.png"));
-    private ImageIcon imgAbout = new ImageIcon(getClass().getResource("images/about.png"));
-    private ImageIcon imgAbout_selected = new ImageIcon(getClass().getResource("images/about_selected.png"));
+    private ImageIcon imgMap;
+    private ImageIcon imgMap_selected;
+    private ImageIcon imgSpeech;
+    private ImageIcon imgSpeech_selected;
+
+    private ImageIcon imgSatellite;
+    private ImageIcon imgSatellite_selected;
+    private ImageIcon imgAbout;
+    private ImageIcon imgAbout_selected;
 
     MenuScreen(ScreenManager sm) {
         super(sm);
         setLayout(null);
         setBackground(Color.BLACK);
+        try {
+            imgWhereTo = new ImageIcon(getClass().getResource("images/whereTo.png"));
+            imgWhereTo_selected = new ImageIcon(getClass().getResource("images/whereTo_selected.png"));
+            imgTripComputer = new ImageIcon(getClass().getResource("images/tripComputer.png"));
+            imgTripComputer_selected = new ImageIcon(getClass().getResource("images/tripComputer_selected.png"));
+            imgMap = new ImageIcon(getClass().getResource("images/map.png"));
+            imgMap_selected = new ImageIcon(getClass().getResource("images/map_selected.png"));
+            imgSpeech = new ImageIcon(getClass().getResource("images/speech.png"));
+            imgSpeech_selected = new ImageIcon(getClass().getResource("images/speech_selected.png"));
+            imgSatellite = new ImageIcon(getClass().getResource("images/satellite.png"));
+            imgSatellite_selected = new ImageIcon(getClass().getResource("images/satellite_selected.png"));
+            imgAbout = new ImageIcon(getClass().getResource("images/about.png"));
+            imgAbout_selected = new ImageIcon(getClass().getResource("images/about_selected.png"));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
-        //Creates the whereTo image (Default Selected)
-        whereTo.setIcon(imgWhereTo_selected);
-        whereTo.setBounds(87, 224, 100, 72);
-        add(whereTo);
-        selectedItem = "whereTo";
+        //Creates the whereToLabel image (Default Selected)
+        whereToLabel.setIcon(imgWhereTo_selected);
+        whereToLabel.setBounds(87, 224, 100, 72);
+        add(whereToLabel);
+        selectedItem = Selection.whereTo;
 
-        //Creates the tripComputer image
-        tripComputer.setIcon(imgTripComputer);
-        tripComputer.setBounds(182, 224, 90, 72);
-        add(tripComputer);
+        //Creates the tripComputerLabel image
+        tripComputerLabel.setIcon(imgTripComputer);
+        tripComputerLabel.setBounds(182, 224, 90, 72);
+        add(tripComputerLabel);
 
-        //Creates the map image
-        map.setIcon(imgMap);
-        map.setBounds(87, 301, 90, 72);
-        add(map);
+        //Creates the mapLabel image
+        mapLabel.setIcon(imgMap);
+        mapLabel.setBounds(87, 301, 90, 72);
+        add(mapLabel);
 
-        //Creates the speech image
-        speech.setIcon(imgSpeech);
-        speech.setBounds(182, 301, 90, 72);
-        add(speech);
+        //Creates the speechLabel image
+        speechLabel.setIcon(imgSpeech);
+        speechLabel.setBounds(182, 301, 90, 72);
+        add(speechLabel);
 
-        //Creates the satellite image
-        satellite.setIcon(imgSatellite);
-        satellite.setBounds(87, 378, 90, 72);
-        add(satellite);
+        //Creates the satelliteLabel image
+        satelliteLabel.setIcon(imgSatellite);
+        satelliteLabel.setBounds(87, 378, 90, 72);
+        add(satelliteLabel);
 
-        //Creates the about image
-        about.setIcon(imgAbout);
-        about.setBounds(182, 378, 90, 72);
-        add(about);
+        //Creates the aboutLabel image
+        aboutLabel.setIcon(imgAbout);
+        aboutLabel.setBounds(182, 378, 90, 72);
+        add(aboutLabel);
     }
 
     @Override
     void showScreen() {
-        whereTo.setIcon(imgWhereTo_selected);
-        selectedItem = "whereTo";
-        tripComputer.setIcon(imgTripComputer);
-        map.setIcon(imgMap);
-        speech.setIcon(imgSpeech);
-        satellite.setIcon(imgSatellite);
-        about.setIcon(imgAbout);
+        whereToLabel.setIcon(imgWhereTo_selected);
+        selectedItem = Selection.whereTo;
+        tripComputerLabel.setIcon(imgTripComputer);
+        mapLabel.setIcon(imgMap);
+        speechLabel.setIcon(imgSpeech);
+        satelliteLabel.setIcon(imgSatellite);
+        aboutLabel.setIcon(imgAbout);
     }
 
     @Override
     void plus() {
         switch (selectedItem) {
-            case "whereTo": {
-                whereTo.setIcon(imgWhereTo);
-                tripComputer.setIcon(imgTripComputer_selected);
-                selectedItem = "tripComputer";
+            case whereTo: {
+                whereToLabel.setIcon(imgWhereTo);
+                tripComputerLabel.setIcon(imgTripComputer_selected);
+                selectedItem = Selection.tripComputer;
                 break;
             }
-            case "tripComputer": {
-                tripComputer.setIcon(imgTripComputer);
-                map.setIcon(imgMap_selected);
-                selectedItem = "map";
+            case tripComputer: {
+                tripComputerLabel.setIcon(imgTripComputer);
+                mapLabel.setIcon(imgMap_selected);
+                selectedItem = Selection.map;
                 break;
             }
-            case "map": {
-                map.setIcon(imgMap);
-                speech.setIcon(imgSpeech_selected);
-                selectedItem = "speech";
+            case map: {
+                mapLabel.setIcon(imgMap);
+                speechLabel.setIcon(imgSpeech_selected);
+                selectedItem = Selection.speech;
                 break;
             }
-            case "speech": {
-                speech.setIcon(imgSpeech);
-                satellite.setIcon(imgSatellite_selected);
-                selectedItem = "satellite";
+            case speech: {
+                speechLabel.setIcon(imgSpeech);
+                satelliteLabel.setIcon(imgSatellite_selected);
+                selectedItem = Selection.satellite;
                 break;
             }
-            case "satellite": {
-                satellite.setIcon(imgSatellite);
-                about.setIcon(imgAbout_selected);
-                selectedItem = "about";
+            case satellite: {
+                satelliteLabel.setIcon(imgSatellite);
+                aboutLabel.setIcon(imgAbout_selected);
+                selectedItem = Selection.about;
                 break;
             }
-            case "about": {
-                about.setIcon(imgAbout);
-                whereTo.setIcon(imgWhereTo_selected);
-                selectedItem = "whereTo";
+            case about: {
+                aboutLabel.setIcon(imgAbout);
+                whereToLabel.setIcon(imgWhereTo_selected);
+                selectedItem = Selection.whereTo;
                 break;
             }
         }
@@ -121,40 +154,40 @@ class MenuScreen extends Screen {
     @Override
     void minus() {
         switch (selectedItem) {
-            case "about": {
-                about.setIcon(imgAbout);
-                satellite.setIcon(imgSatellite_selected);
-                selectedItem = "satellite";
+            case about: {
+                aboutLabel.setIcon(imgAbout);
+                satelliteLabel.setIcon(imgSatellite_selected);
+                selectedItem = Selection.satellite;
                 break;
             }
-            case "satellite": {
-                satellite.setIcon(imgSatellite);
-                speech.setIcon(imgSpeech_selected);
-                selectedItem = "speech";
+            case satellite: {
+                satelliteLabel.setIcon(imgSatellite);
+                speechLabel.setIcon(imgSpeech_selected);
+                selectedItem = Selection.speech;
                 break;
             }
-            case "speech": {
-                speech.setIcon(imgSpeech);
-                map.setIcon(imgMap_selected);
-                selectedItem = "map";
+            case speech: {
+                speechLabel.setIcon(imgSpeech);
+                mapLabel.setIcon(imgMap_selected);
+                selectedItem = Selection.map;
                 break;
             }
-            case "map": {
-                map.setIcon(imgMap);
-                tripComputer.setIcon(imgTripComputer_selected);
-                selectedItem = "tripComputer";
+            case map: {
+                mapLabel.setIcon(imgMap);
+                tripComputerLabel.setIcon(imgTripComputer_selected);
+                selectedItem = Selection.tripComputer;
                 break;
             }
-            case "tripComputer": {
-                tripComputer.setIcon(imgTripComputer);
-                whereTo.setIcon(imgWhereTo_selected);
-                selectedItem = "whereTo";
+            case tripComputer: {
+                tripComputerLabel.setIcon(imgTripComputer);
+                whereToLabel.setIcon(imgWhereTo_selected);
+                selectedItem = Selection.whereTo;
                 break;
             }
-            case "whereTo": {
-                whereTo.setIcon(imgWhereTo);
-                about.setIcon(imgAbout_selected);
-                selectedItem = "about";
+            case whereTo: {
+                whereToLabel.setIcon(imgWhereTo);
+                aboutLabel.setIcon(imgAbout_selected);
+                selectedItem = Selection.about;
                 break;
             }
         }
@@ -168,33 +201,27 @@ class MenuScreen extends Screen {
     @Override
     void select() {
         switch (selectedItem) {
-            case "whereTo": {
-                System.out.println("Where To clicked");
+            case whereTo: {
                 sm.changeCurrentScreen(sm.whereTo);
                 break;
             }
-            case "tripComputer": {
-                System.out.println("Trip Computer clicked");
+            case tripComputer: {
                 //sm.changeCurrentScreen(sm.tripComp);
                 break;
             }
-            case "map": {
-                System.out.println("Map clicked");
+            case map: {
                 sm.changeCurrentScreen(sm.map);
                 break;
             }
-            case "speech": {
-                System.out.println("Speech clicked");
+            case speech: {
                 sm.changeCurrentScreen(sm.speech);
                 break;
             }
-            case "satellite": {
-                System.out.println("Satellite clicked");
+            case satellite: {
                 sm.changeCurrentScreen(sm.satellite);
                 break;
             }
-            case "about": {
-                System.out.println("About clicked");
+            case about: {
                 sm.changeCurrentScreen(sm.about);
                 break;
             }
