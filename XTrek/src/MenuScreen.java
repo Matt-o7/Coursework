@@ -206,7 +206,7 @@ class MenuScreen extends Screen {
                 break;
             }
             case tripComputer: {
-                //sm.changeCurrentScreen(sm.tripComp);
+                sm.changeCurrentScreen(sm.tripComp);
                 break;
             }
             case map: {
