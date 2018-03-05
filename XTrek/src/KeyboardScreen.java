@@ -1,14 +1,11 @@
-import java.awt.Color;
-import java.io.File;
-import java.io.IOException;
-
-import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 
 public class KeyboardScreen extends Screen {
-    char selected = 'A';
+    private char selected = 'A';
+    public String output = "";
     JLabel screen = new JLabel();
+    JLabel display = new JLabel(output);
 
     public KeyboardScreen(ScreenManager sm) {
         super(sm);
@@ -16,6 +13,10 @@ public class KeyboardScreen extends Screen {
 
         screen.setIcon(new ImageIcon(getClass().getResource("/images/keyboard/backgroundAlphabetA.png")));
         screen.setBounds(87, 224, 187, 232);
+        display.setText("");
+        display.setBounds(97, 232, 166, 18);
+        display.setOpaque(true);
+        add(display);
         add(screen);
     }
 
@@ -27,7 +28,6 @@ public class KeyboardScreen extends Screen {
             if (selected == '\\') selected = ']';
             if (selected == ':') selected = '#';
             ImageIcon icon = new ImageIcon(getClass().getResource("images/keyboard/backgroundAlphabet" + selected + ".png"));
-            System.out.println("images/backgroundAlphabet" + selected + ".png");
             screen.setIcon(icon);
         }
     }
@@ -53,17 +53,40 @@ public class KeyboardScreen extends Screen {
     void select() {
         System.out.print("Select Button Pressed on Button: ");
         if (selected == '[') {
-            System.out.println("Space Bar");
+            //Space Bar
+            output = output + " ";
         } else if (selected == ']') {
+            //Change Keyboard to numerals
             selected = 49; //ASCI for 1
             ImageIcon icon = new ImageIcon(getClass().getResource("/images/keyboard/backgroundAlphabet" + selected + ".png"));
             screen.setIcon(icon);
+        }else if (selected == '$') {
+            //Change Keyboard to Alphabet
+            selected = 'A';
+            ImageIcon icon = new ImageIcon(getClass().getResource("/images/keyboard/backgroundAlphabet" + selected + ".png"));
+            screen.setIcon(icon);
+        }else if (selected == '%'){
+            //Make output remove last digit
+            if (output.length() != 0) {
+                output = output.substring(0, output.length() - 1);
+            }
+        }else if (selected == '#') {
+            //Outputs 0
+            output = output + '0';
+            ;
+
+        }else{
+            //Digit pressed
+            output = output + selected;
+
         }
+        display.setText(output);
     }
 
     void showScreen() {
         selected = 'A';
         screen.setIcon(new ImageIcon(getClass().getResource("/images/keyboard/backgroundAlphabetA.png")));
+        display.setText("");
     }
 
 
