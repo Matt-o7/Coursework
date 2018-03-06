@@ -14,5 +14,22 @@ Have a nice day.
 # ToDo and Suggestions
 Matt
 ----
-+1. Hello
++1. Check MVC
++2. Fix enmun
+
+Gabe
+----
++1. 
+
+Phil
+----
++1. 
+
+Liem
+----
++1. 
+
+Derry
+-----
++1. 
  
