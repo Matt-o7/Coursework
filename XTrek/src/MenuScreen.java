@@ -4,46 +4,101 @@ import java.awt.*;
 
 class MenuScreen extends Screen {
     public enum Selection {
-        whereTo,
-        tripComputer,
-        map,
-        speech,
-        satellite,
-        about;
 
-//        int selected = 0;
-//        private Selection vals[] = values();
-//        public Selection getSelected(){
-//            return vals[selected];
-//        }
-//        public Selection next()
-//        {
-//            return vals[(this.ordinal()+1) % vals.length];
-//        }
+
+        whereTo {
+            @Override
+            public Selection prev() {
+                return values()[values().length - 1];
+            }
+
+            @Override
+            void updateImgs() {
+                whereToLabel.setIcon(imgWhereTo_selected);
+                tripComputerLabel.setIcon(imgTripComputer);
+                aboutLabel.setIcon(imgAbout);
+            }
+        },
+        tripComputer {
+            @Override
+            void updateImgs() {
+                tripComputerLabel.setIcon(imgTripComputer_selected);
+                whereToLabel.setIcon(imgWhereTo);
+                mapLabel.setIcon(imgMap);
+            }
+        },
+        map {
+            @Override
+            void updateImgs() {
+                mapLabel.setIcon(imgMap_selected);
+                tripComputerLabel.setIcon(imgTripComputer);
+                speechLabel.setIcon(imgSpeech);
+            }
+        },
+        speech {
+            @Override
+            void updateImgs() {
+                speechLabel.setIcon(imgSpeech_selected);
+                mapLabel.setIcon(imgMap);
+                satelliteLabel.setIcon(imgSatellite);
+            }
+        },
+        satellite {
+            @Override
+            void updateImgs() {
+                satelliteLabel.setIcon(imgSatellite_selected);
+                speechLabel.setIcon(imgSpeech);
+                aboutLabel.setIcon(imgAbout);
+            }
+        },
+        about {
+            @Override
+            public Selection next() {
+                return values()[0];
+            }
+
+            @Override
+            void updateImgs() {
+                aboutLabel.setIcon(imgAbout_selected);
+                satelliteLabel.setIcon(imgSatellite);
+                whereToLabel.setIcon(imgWhereTo);
+            }
+        };
+
+        abstract void updateImgs();
+
+        Selection next() {
+            return values()[ordinal() + 1];
+        }
+
+        Selection prev() {
+            return values()[ordinal() - 1];
+        }
     }
-    private JLabel whereToLabel = new JLabel();
-    private JLabel tripComputerLabel = new JLabel();
-    private JLabel mapLabel = new JLabel();
-    private JLabel speechLabel = new JLabel();
-    private JLabel satelliteLabel = new JLabel();
-    private JLabel aboutLabel = new JLabel();
 
-    Selection selectedItem = Selection.whereTo;
+    private Selection selectedItem;
 
-    private ImageIcon imgWhereTo;
-    private ImageIcon imgWhereTo_selected;
-    private ImageIcon imgTripComputer;
-    private ImageIcon imgTripComputer_selected;
+    private static JLabel whereToLabel = new JLabel();
+    private static JLabel tripComputerLabel = new JLabel();
+    private static JLabel mapLabel = new JLabel();
+    private static JLabel speechLabel = new JLabel();
+    private static JLabel satelliteLabel = new JLabel();
+    private static JLabel aboutLabel = new JLabel();
 
-    private ImageIcon imgMap;
-    private ImageIcon imgMap_selected;
-    private ImageIcon imgSpeech;
-    private ImageIcon imgSpeech_selected;
+    private static ImageIcon imgWhereTo;
+    private static ImageIcon imgWhereTo_selected;
+    private static ImageIcon imgTripComputer;
+    private static ImageIcon imgTripComputer_selected;
 
-    private ImageIcon imgSatellite;
-    private ImageIcon imgSatellite_selected;
-    private ImageIcon imgAbout;
-    private ImageIcon imgAbout_selected;
+    private static ImageIcon imgMap;
+    private static ImageIcon imgMap_selected;
+    private static ImageIcon imgSpeech;
+    private static ImageIcon imgSpeech_selected;
+
+    private static ImageIcon imgSatellite;
+    private static ImageIcon imgSatellite_selected;
+    private static ImageIcon imgAbout;
+    private static ImageIcon imgAbout_selected;
 
     MenuScreen(ScreenManager sm) {
         super(sm);
@@ -66,40 +121,29 @@ class MenuScreen extends Screen {
             e.printStackTrace();
         }
 
-        //Creates the whereToLabel image (Default Selected)
-        whereToLabel.setIcon(imgWhereTo_selected);
+        //Positions and adds the menu icon images
         whereToLabel.setBounds(87, 224, 100, 72);
         add(whereToLabel);
-        selectedItem = Selection.whereTo;
 
-        //Creates the tripComputerLabel image
-        tripComputerLabel.setIcon(imgTripComputer);
         tripComputerLabel.setBounds(182, 224, 90, 72);
         add(tripComputerLabel);
 
-        //Creates the mapLabel image
-        mapLabel.setIcon(imgMap);
         mapLabel.setBounds(87, 301, 90, 72);
         add(mapLabel);
 
-        //Creates the speechLabel image
-        speechLabel.setIcon(imgSpeech);
         speechLabel.setBounds(182, 301, 90, 72);
         add(speechLabel);
 
-        //Creates the satelliteLabel image
-        satelliteLabel.setIcon(imgSatellite);
         satelliteLabel.setBounds(87, 378, 90, 72);
         add(satelliteLabel);
 
-        //Creates the aboutLabel image
-        aboutLabel.setIcon(imgAbout);
         aboutLabel.setBounds(182, 378, 90, 72);
         add(aboutLabel);
     }
 
     @Override
     void showScreen() {
+        //Sets all of the menu item icons and reselect whereTo as default selected
         whereToLabel.setIcon(imgWhereTo_selected);
         selectedItem = Selection.whereTo;
         tripComputerLabel.setIcon(imgTripComputer);
@@ -111,86 +155,14 @@ class MenuScreen extends Screen {
 
     @Override
     void plus() {
-        switch (selectedItem) {
-            case whereTo: {
-                whereToLabel.setIcon(imgWhereTo);
-                tripComputerLabel.setIcon(imgTripComputer_selected);
-                selectedItem = Selection.tripComputer;
-                break;
-            }
-            case tripComputer: {
-                tripComputerLabel.setIcon(imgTripComputer);
-                mapLabel.setIcon(imgMap_selected);
-                selectedItem = Selection.map;
-                break;
-            }
-            case map: {
-                mapLabel.setIcon(imgMap);
-                speechLabel.setIcon(imgSpeech_selected);
-                selectedItem = Selection.speech;
-                break;
-            }
-            case speech: {
-                speechLabel.setIcon(imgSpeech);
-                satelliteLabel.setIcon(imgSatellite_selected);
-                selectedItem = Selection.satellite;
-                break;
-            }
-            case satellite: {
-                satelliteLabel.setIcon(imgSatellite);
-                aboutLabel.setIcon(imgAbout_selected);
-                selectedItem = Selection.about;
-                break;
-            }
-            case about: {
-                aboutLabel.setIcon(imgAbout);
-                whereToLabel.setIcon(imgWhereTo_selected);
-                selectedItem = Selection.whereTo;
-                break;
-            }
-        }
+        selectedItem = selectedItem.next();
+        selectedItem.updateImgs();
     }
 
     @Override
     void minus() {
-        switch (selectedItem) {
-            case about: {
-                aboutLabel.setIcon(imgAbout);
-                satelliteLabel.setIcon(imgSatellite_selected);
-                selectedItem = Selection.satellite;
-                break;
-            }
-            case satellite: {
-                satelliteLabel.setIcon(imgSatellite);
-                speechLabel.setIcon(imgSpeech_selected);
-                selectedItem = Selection.speech;
-                break;
-            }
-            case speech: {
-                speechLabel.setIcon(imgSpeech);
-                mapLabel.setIcon(imgMap_selected);
-                selectedItem = Selection.map;
-                break;
-            }
-            case map: {
-                mapLabel.setIcon(imgMap);
-                tripComputerLabel.setIcon(imgTripComputer_selected);
-                selectedItem = Selection.tripComputer;
-                break;
-            }
-            case tripComputer: {
-                tripComputerLabel.setIcon(imgTripComputer);
-                whereToLabel.setIcon(imgWhereTo_selected);
-                selectedItem = Selection.whereTo;
-                break;
-            }
-            case whereTo: {
-                whereToLabel.setIcon(imgWhereTo);
-                aboutLabel.setIcon(imgAbout_selected);
-                selectedItem = Selection.about;
-                break;
-            }
-        }
+        selectedItem = selectedItem.prev();
+        selectedItem.updateImgs();
     }
 
     @Override
