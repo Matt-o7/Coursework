@@ -15,7 +15,7 @@ Have a nice day.
 Matt
 ----
 1. Check MVC
-2. Fix enmun
+2. Swap to singletons? (Waiting for Davids reply)
 
 Gabe
 ----
