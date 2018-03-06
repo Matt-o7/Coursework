@@ -19,11 +19,11 @@ Matt
 
 Gabe
 ----
-1. Stuff
+1. Finish the trip computer!
 
 Phil
 ----
-1. Stuff
+1. Maybe move sound files to res folder?
 
 Liem
 ----
