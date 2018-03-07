@@ -3,17 +3,33 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 
 public class MapScreen extends Screen {
+    //Singleton initializer
+    private static MapScreen mapInstance;
+
+
     private BufferedImage img;
     JLabel label;
     int zoom = 12;
     double lat = 50.737730, lon = -3.532626;
 
-    public MapScreen(ScreenManager sm) {
+    private MapScreen(ScreenManager sm) {
         super(sm);
         img = MapView.updateImage(lat, lon, zoom, "370x635");
         setBackground(new Color(163,204,255));
         label = new JLabel(new ImageIcon(img));
         add(label);
+    }
+
+    static MapScreen getInstance(){
+        /*
+         * Returns the instance of MapScreen
+         *
+         * @return the instance
+         */
+        if(mapInstance == null){
+            mapInstance = new MapScreen(sm);
+        }
+        return mapInstance;
     }
 
     @Override
@@ -51,11 +67,6 @@ public class MapScreen extends Screen {
         zoom--;
         img = MapView.updateImage(lat, lon, zoom, "370x635");
         label.setIcon(new ImageIcon(img));
-    }
-
-    @Override
-    public void menu() {
-        sm.changeCurrentScreen(sm.menu);
     }
 
     @Override

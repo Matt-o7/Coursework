@@ -13,13 +13,6 @@ public class ScreenManager extends JFrame {
     private Screen currentScreen;
 
     OffScreen off = new OffScreen(this);
-    MenuScreen menu = new MenuScreen(this);
-    KeyboardScreen whereTo = new KeyboardScreen(this);
-    MapScreen map = new MapScreen(this);
-    SatelliteScreen satellite = new SatelliteScreen(this);
-    SpeechScreen speech = new SpeechScreen(this);
-    AboutScreen about = new AboutScreen(this);
-    TripScreen tripComp = new TripScreen(this);
 
     public static void main(String[] args) {
         try {
@@ -106,41 +99,36 @@ public class ScreenManager extends JFrame {
 
 
     private void onOffPressed() {
-        //System.out.println("On Off Pressed");
         currentScreen.onOff();
         repaint();
     }
 
     private void plusButtonPressed() {
-        //System.out.println("Plus Button Pressed");
         currentScreen.plus();
         repaint();
     }
 
     private void minusButtonPressed() {
-        //System.out.println("Minus Button Pressed");
         currentScreen.minus();
         repaint();
     }
 
     private void selectButtonPressed() {
-        //System.out.println("Select Button Pressed");
         currentScreen.select();
         repaint();
     }
 
     private void menuButtonPressed() {
-        //System.out.println("Menu Button Pressed");
         currentScreen.menu();
         repaint();
     }
 }
 
 abstract class Screen extends JPanel {
-    ScreenManager sm;
+    static ScreenManager sm;
 
     Screen(ScreenManager sm) {
-        this.sm = sm;
+        Screen.sm = sm;
     }
 
     abstract void showScreen();
@@ -149,9 +137,11 @@ abstract class Screen extends JPanel {
 
     abstract void minus();
 
-    abstract void menu();
-
     abstract void select();
+
+    void menu() {
+        sm.changeCurrentScreen(MenuScreen.getInstance());
+    }
 
     void onOff() {
         sm.changeCurrentScreen(sm.off);

@@ -2,12 +2,15 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 
 public class KeyboardScreen extends Screen {
+    //Singleton initializer of KeyboardScreen
+    private static KeyboardScreen keyboardInstance;
+
     private char selected = 'A';
     public String output = "";
     JLabel screen = new JLabel();
     JLabel display = new JLabel(output);
 
-    public KeyboardScreen(ScreenManager sm) {
+    private KeyboardScreen(ScreenManager sm) {
         super(sm);
         setLayout(null);
 
@@ -18,6 +21,18 @@ public class KeyboardScreen extends Screen {
         display.setOpaque(true);
         add(display);
         add(screen);
+    }
+
+    static KeyboardScreen getInstance(){
+        /*
+         * Returns the single instance of KeyboardScreen
+         *
+         * @return the instance of KeyboardScreen
+         */
+        if(keyboardInstance == null){
+            keyboardInstance = new KeyboardScreen(sm);
+        }
+        return keyboardInstance;
     }
 
     @Override
@@ -42,11 +57,6 @@ public class KeyboardScreen extends Screen {
             ImageIcon icon = new ImageIcon(getClass().getResource("/images/keyboard/backgroundAlphabet" + selected + ".png"));
             screen.setIcon(icon);
         }
-    }
-
-    @Override
-    void menu() {
-        sm.changeCurrentScreen(sm.menu);
     }
 
     @Override

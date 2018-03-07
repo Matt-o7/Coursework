@@ -3,6 +3,8 @@ import javax.swing.*;
 import java.awt.*;
 
 public class SpeechScreen extends Screen {
+    //Singleton initializer of SpeechScreen
+    private static SpeechScreen speechInstance;
 
     JLabel  off = new JLabel();
     JLabel  english = new JLabel();
@@ -18,7 +20,7 @@ public class SpeechScreen extends Screen {
     JLabel  italianO = new JLabel();
     JLabel  spanishO = new JLabel();
 
-    public SpeechScreen(ScreenManager sm) {
+    private SpeechScreen(ScreenManager sm) {
         super(sm);
 
         setLayout(null);
@@ -114,6 +116,18 @@ public class SpeechScreen extends Screen {
 
     }
 
+    static SpeechScreen getInstance(){
+        /*
+         * Returns the single instance of SpeechScreen
+         *
+         * @return the instance of SpeechScreen
+         */
+        if(speechInstance == null){
+            speechInstance = new SpeechScreen(sm);
+        }
+        return speechInstance;
+    }
+
     @Override
     void showScreen() {
         setBackground(Color.BLACK);
@@ -190,11 +204,6 @@ public class SpeechScreen extends Screen {
     }
 
     @Override
-    void menu() {
-        sm.changeCurrentScreen(sm.menu);
-    }
-
-    @Override
     void select() {
 
         if (english.isVisible() == false){
@@ -217,12 +226,5 @@ public class SpeechScreen extends Screen {
             AudioInputStream stm = Sound.setupStream( "spanish.wav" );
             Sound.playStream( stm, Sound.readStream( stm ) );
         }
-
-    }
-
-
-    @Override
-    void onOff() {
-        sm.changeCurrentScreen(sm.off);
     }
 }

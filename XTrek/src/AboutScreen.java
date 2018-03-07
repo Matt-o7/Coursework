@@ -4,12 +4,27 @@ import java.awt.*;
 import java.io.IOException;
 
 class AboutScreen extends Screen {
+    //Singleton initializer of AboutScreen
+    private static AboutScreen aboutInstance;
+
     JLabel aboutImage = new JLabel();
 
-    AboutScreen(ScreenManager sm) {
+    private AboutScreen(ScreenManager sm) {
         super(sm);
         setLayout(null);
         setBackground(Color.BLACK);
+    }
+
+    static AboutScreen getInstance(){
+        /*
+         * Returns the single instance of AboutScreen
+         *
+         * @return the instance of AboutScreen
+         */
+        if(aboutInstance == null){
+            aboutInstance = new AboutScreen(sm);
+        }
+        return aboutInstance;
     }
 
     @Override
@@ -23,6 +38,8 @@ class AboutScreen extends Screen {
         add(aboutImage);
     }
 
+
+
     @Override
     void plus() {
 
@@ -31,11 +48,6 @@ class AboutScreen extends Screen {
     @Override
     void minus() {
 
-    }
-
-    @Override
-    void menu() {
-        sm.changeCurrentScreen(sm.menu);
     }
 
     @Override

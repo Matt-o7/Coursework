@@ -3,9 +3,10 @@ import java.awt.*;
 
 
 class MenuScreen extends Screen {
+    //Singleton initializer for MenuScreen
+    private static MenuScreen menuInstance;
+
     public enum Selection {
-
-
         whereTo {
             @Override
             public Selection prev() {
@@ -87,39 +88,39 @@ class MenuScreen extends Screen {
 
     private static ImageIcon imgWhereTo;
     private static ImageIcon imgWhereTo_selected;
+
     private static ImageIcon imgTripComputer;
     private static ImageIcon imgTripComputer_selected;
 
     private static ImageIcon imgMap;
     private static ImageIcon imgMap_selected;
+
     private static ImageIcon imgSpeech;
     private static ImageIcon imgSpeech_selected;
 
     private static ImageIcon imgSatellite;
     private static ImageIcon imgSatellite_selected;
+
     private static ImageIcon imgAbout;
     private static ImageIcon imgAbout_selected;
 
-    MenuScreen(ScreenManager sm) {
+    private MenuScreen(ScreenManager sm) {
         super(sm);
         setLayout(null);
         setBackground(Color.BLACK);
-        try {
-            imgWhereTo = new ImageIcon(getClass().getResource("images/whereTo.png"));
-            imgWhereTo_selected = new ImageIcon(getClass().getResource("images/whereTo_selected.png"));
-            imgTripComputer = new ImageIcon(getClass().getResource("images/tripComputer.png"));
-            imgTripComputer_selected = new ImageIcon(getClass().getResource("images/tripComputer_selected.png"));
-            imgMap = new ImageIcon(getClass().getResource("images/map.png"));
-            imgMap_selected = new ImageIcon(getClass().getResource("images/map_selected.png"));
-            imgSpeech = new ImageIcon(getClass().getResource("images/speech.png"));
-            imgSpeech_selected = new ImageIcon(getClass().getResource("images/speech_selected.png"));
-            imgSatellite = new ImageIcon(getClass().getResource("images/satellite.png"));
-            imgSatellite_selected = new ImageIcon(getClass().getResource("images/satellite_selected.png"));
-            imgAbout = new ImageIcon(getClass().getResource("images/about.png"));
-            imgAbout_selected = new ImageIcon(getClass().getResource("images/about_selected.png"));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        imgWhereTo = new ImageIcon(getClass().getResource("images/whereTo.png"));
+        imgWhereTo_selected = new ImageIcon(getClass().getResource("images/whereTo_selected.png"));
+        imgTripComputer = new ImageIcon(getClass().getResource("images/tripComputer.png"));
+        imgTripComputer_selected = new ImageIcon(getClass().getResource("images/tripComputer_selected.png"));
+        imgMap = new ImageIcon(getClass().getResource("images/map.png"));
+        imgMap_selected = new ImageIcon(getClass().getResource("images/map_selected.png"));
+        imgSpeech = new ImageIcon(getClass().getResource("images/speech.png"));
+        imgSpeech_selected = new ImageIcon(getClass().getResource("images/speech_selected.png"));
+        imgSatellite = new ImageIcon(getClass().getResource("images/satellite.png"));
+        imgSatellite_selected = new ImageIcon(getClass().getResource("images/satellite_selected.png"));
+        imgAbout = new ImageIcon(getClass().getResource("images/about.png"));
+        imgAbout_selected = new ImageIcon(getClass().getResource("images/about_selected.png"));
+
 
         //Positions and adds the menu icon images
         whereToLabel.setBounds(87, 224, 100, 72);
@@ -139,6 +140,13 @@ class MenuScreen extends Screen {
 
         aboutLabel.setBounds(182, 378, 90, 72);
         add(aboutLabel);
+    }
+
+    static MenuScreen getInstance() {
+        if (menuInstance == null) {
+            menuInstance = new MenuScreen(sm);
+        }
+        return menuInstance;
     }
 
     @Override
@@ -174,27 +182,27 @@ class MenuScreen extends Screen {
     void select() {
         switch (selectedItem) {
             case whereTo: {
-                sm.changeCurrentScreen(sm.whereTo);
+                sm.changeCurrentScreen(KeyboardScreen.getInstance());
                 break;
             }
             case tripComputer: {
-                sm.changeCurrentScreen(sm.tripComp);
+                sm.changeCurrentScreen(TripScreen.getInstance());
                 break;
             }
             case map: {
-                sm.changeCurrentScreen(sm.map);
+                sm.changeCurrentScreen(MapScreen.getInstance());
                 break;
             }
             case speech: {
-                sm.changeCurrentScreen(sm.speech);
+                sm.changeCurrentScreen(SpeechScreen.getInstance());
                 break;
             }
             case satellite: {
-                sm.changeCurrentScreen(sm.satellite);
+                sm.changeCurrentScreen(SatelliteScreen.getInstance());
                 break;
             }
             case about: {
-                sm.changeCurrentScreen(sm.about);
+                sm.changeCurrentScreen(AboutScreen.getInstance());
                 break;
             }
         }

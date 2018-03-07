@@ -2,6 +2,8 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 
 public class TripScreen extends Screen {
+    //Singleton initializer of TripScreen
+    private static TripScreen tripInstance;
 
     public String trip_odem = "0.0";
     public String speed = "SHOW UP BITCH";
@@ -14,7 +16,7 @@ public class TripScreen extends Screen {
     JLabel j_time = new JLabel(minutes + " minutes " + seconds + "seconds");
     //public String moving_time = "";
 
-    public TripScreen(ScreenManager sm) {
+    private TripScreen(ScreenManager sm) {
         super(sm);
         setLayout(null);
 
@@ -42,6 +44,18 @@ public class TripScreen extends Screen {
 
     }
 
+    static TripScreen getInstance(){
+        /*
+         * Returns the single instance of TripScreen
+         *
+         * @return the instance of TripScreen
+         */
+        if(tripInstance == null){
+            tripInstance = new TripScreen(sm);
+        }
+        return tripInstance;
+    }
+
     @Override
     void plus() {
 
@@ -50,11 +64,6 @@ public class TripScreen extends Screen {
     @Override
     void minus() {
 
-    }
-
-    @Override
-    void menu() {
-        sm.changeCurrentScreen(sm.menu);
     }
 
     @Override

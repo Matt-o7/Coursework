@@ -1,7 +1,8 @@
 import java.awt.*;
 
-public class OffScreen extends Screen {
-    public OffScreen(ScreenManager sm) {
+class OffScreen extends Screen {
+
+     OffScreen(ScreenManager sm) {
         super(sm);
 
     }
@@ -31,9 +32,8 @@ public class OffScreen extends Screen {
 
     }
 
-
     @Override
     void onOff() {
-        sm.changeCurrentScreen(sm.menu);
+        sm.changeCurrentScreen(MenuScreen.getInstance());
     }
 }
