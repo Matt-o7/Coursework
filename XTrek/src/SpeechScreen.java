@@ -1,17 +1,18 @@
 import javax.sound.sampled.AudioInputStream;
 import javax.swing.*;
 import java.awt.*;
+import java.nio.file.*;
 
 public class SpeechScreen extends Screen {
     //Singleton initializer of SpeechScreen
     private static SpeechScreen speechInstance;
 
     JLabel  off = new JLabel();
-    JLabel  english = new JLabel();
-    JLabel  french = new JLabel();
-    JLabel  german = new JLabel();
-    JLabel  italian = new JLabel();
-    JLabel  spanish = new JLabel();
+    static JLabel  english = new JLabel();
+    static JLabel  french = new JLabel();
+    static JLabel  german = new JLabel();
+    static JLabel  italian = new JLabel();
+    static JLabel  spanish = new JLabel();
 
     JLabel  offO = new JLabel();
     JLabel  englishO = new JLabel();
@@ -20,23 +21,25 @@ public class SpeechScreen extends Screen {
     JLabel  italianO = new JLabel();
     JLabel  spanishO = new JLabel();
 
+    final static String KEY1 = "bc5d1a3f91ab43208f162ed2d2dd799c";
+    final static String KEY2 = "e0d253267c6248ce875443df85049dd4";
+    final static String FORMAT = "riff-16khz-16bit-mono-pcm";
+    final static String token  = Speech.renewAccessToken( KEY1 );
+
+    static byte[] speech;
+
     private SpeechScreen(ScreenManager sm) {
         super(sm);
 
         setLayout(null);
 
 
-        final String KEY1 = "bc5d1a3f91ab43208f162ed2d2dd799c";
-        final String KEY2 = "e0d253267c6248ce875443df85049dd4";
-        final String FORMAT = "riff-16khz-16bit-mono-pcm";
-
-        byte[] speech;
-
-
-        final String token  = Speech.renewAccessToken( KEY1 );
 
 
 
+
+
+        System.out.println("Initialisation");
         //Initialises the sounds for each option
         speech = Speech.generateSpeech( token,  "English",   "en-US"
                 , "Female", "(en-GB, Susan, Apollo)", FORMAT );
@@ -113,10 +116,71 @@ public class SpeechScreen extends Screen {
         spanishO.setBounds(x, y+(5*38), buttonWidth, buttonHeight);
         add(spanishO);
 
-
+        off.setVisible(false);
         //setVisible(true);
 
+
     }
+
+    public static void generateSpeechSound(String toBeSaid, String language){
+
+        if (language != "off" && toBeSaid.length() < 50) {
+            String filePathString = "res/audio/" + toBeSaid + ".wav";
+            Path path = Paths.get(filePathString);
+
+
+            if (Files.exists(path)) {
+                AudioInputStream stm = Sound.setupStream(filePathString);
+                Sound.playStream(stm, Sound.readStream(stm));
+            } else {
+                if (language == "english") {
+                    speech = Speech.generateSpeech(token, toBeSaid, "en-US"
+                            , "Female", "(en-GB, Susan, Apollo)", FORMAT);
+                } else if (language == "french") {
+                    speech = Speech.generateSpeech(token, toBeSaid, "Fr-FR"
+                            , "Female", "(fr-FR, Julie, Apollo)", FORMAT);
+                } else if (language == "german") {
+                    speech = Speech.generateSpeech(token, toBeSaid, "de-DE"
+                            , "Male", "(de-DE, Stefan, Apollo)", FORMAT);
+                } else if (language == "italian") {
+                    speech = Speech.generateSpeech(token, toBeSaid, "it-IT"
+                            , "Male", "(it-IT, Cosimo, Apollo)", FORMAT);
+                } else if (language == "spanish") {
+                    speech = Speech.generateSpeech(token, toBeSaid, "es-ES"
+                            , "Female", "(es-ES, Laura, Apollo)", FORMAT);
+                }
+                Speech.writeData(speech, filePathString);
+                AudioInputStream stm = Sound.setupStream(filePathString);
+                Sound.playStream(stm, Sound.readStream(stm));
+            }
+
+
+        } else{
+            System.out.println("Either speech is off or string is too long");
+        }
+    }
+
+    public static String getLanguage(){
+        if (english.isVisible() == false){
+            return "english";
+        }
+        else if (french.isVisible() == false){
+            return "french";
+        }
+        else if (german.isVisible() == false){
+            return "german";
+        }
+        else if (italian.isVisible() == false){
+            return "italian";
+        }
+        else if (spanish.isVisible() == false){
+            return "spanish";
+        }
+        else {
+            return "off";
+        }
+    }
+
 
     static SpeechScreen getInstance(){
         /*
@@ -133,13 +197,6 @@ public class SpeechScreen extends Screen {
     @Override
     void showScreen() {
         setBackground(Color.BLACK);
-        off.setVisible(false);
-        english.setVisible(true);
-        french.setVisible(true);
-        german.setVisible(true);
-        italian.setVisible(true);
-        spanish.setVisible(true);
-
     }
 
     @Override
