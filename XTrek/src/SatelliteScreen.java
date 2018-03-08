@@ -1,7 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
 
-/*
+/**
  * SatelliteScreen, which is a screen displaying
  * information regarding GPS.
  *
@@ -26,9 +26,11 @@ class SatelliteScreen extends Screen {
     private final int F_S = 18;
 
     private SatelliteScreen(ScreenManager sm) {
-        /*
+        /**
          * Determines the base details of the screen
          * when the ScreenManager calls SatelliteScreen.
+         *
+         * @param sm, which is of type ScreenManager.
          *
          * @returns the base of the SatelliteScreen which will be
          *         displayed when called by ScreenManager.
@@ -39,7 +41,7 @@ class SatelliteScreen extends Screen {
     }
 
     static SatelliteScreen getInstance() {
-        /*
+        /**
          * Returns the single instance of KeyboardScreen
          *
          * @return the instance of KeyboardScreen
@@ -53,7 +55,7 @@ class SatelliteScreen extends Screen {
 
     @Override
     void showScreen() {
-        /*
+        /**
          * Returns the appropriate screen when the "Satellite"
          * tab is selected on the home screen.
          *

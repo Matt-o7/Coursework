@@ -2,13 +2,13 @@ import java.io.File;
 import java.util.*;
 import java.util.List;
 
-/* 
+/**
  * GPS OSXUblox7 reader.
  * 
  * Liem Pham, 2018.
  */
 public class GeoPosition {
-    /*
+    /**
      * Reader.
      */
 
@@ -19,10 +19,12 @@ public class GeoPosition {
 
 
     static String reader(String fileName) {
-        /*
+        /**
          * Determines the longitude and latitude, depending
          * on whether your location is detectable using a OSXUblox7
          * dongle. Otherwise, two error messages will appear.
+         *
+         * @param fileName which is the usb device/OSXUblox7.
          *
          * @returns either the longitude and latitude of your location,
          *          or two error messages for two different scenarios.

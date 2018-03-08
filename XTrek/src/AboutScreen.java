@@ -3,7 +3,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.io.IOException;
 
-/*
+/**
  * AboutScreen, the screen displaying
  * information about the device.
  *
@@ -25,11 +25,12 @@ class AboutScreen extends Screen {
     private final int CO_W = 220;
     private final int CO_H = 300;
 
-
     private AboutScreen(ScreenManager sm) {
-        /*
+        /**
          * Determines the base details of the screen
          * when the ScreenManager calls AboutScreen.
+         *
+         * @param sm, type ScreenManager.
          *
          * @returns the base of the AboutScreen which will be
          *         displayed when called by ScreenManager.
@@ -42,7 +43,7 @@ class AboutScreen extends Screen {
 
 
     static AboutScreen getInstance(){
-        /*
+        /**
          * Returns the single instance of AboutScreen
          *
          * @return the instance of AboutScreen
@@ -57,7 +58,7 @@ class AboutScreen extends Screen {
 
     @Override
     void showScreen() {
-        /*
+        /**
          * Returns the appropriate screen when the "about"
          * tab is selected on the home screen.
          *
