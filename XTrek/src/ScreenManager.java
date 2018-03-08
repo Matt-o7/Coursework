@@ -3,6 +3,8 @@ import java.io.IOException;
 
 /**
  * The ScreenManager class manages the different screens for the device
+ *
+ * @author Dennis Harrop, updated by Matt Humphrey, 2018
  */
 public class ScreenManager extends JFrame {
 
@@ -42,6 +44,7 @@ public class ScreenManager extends JFrame {
     private final int minusBtnWidth = 30;
     private final int minusBtnHeight = 55;
 
+    //The location and sizes of the select button
     private final int selectBtnX = 10;
     private final int selectBtnY = 190;
     private final int selectBtnWidth = 30;

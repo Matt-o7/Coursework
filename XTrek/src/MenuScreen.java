@@ -4,6 +4,8 @@ import java.awt.*;
 
 /**
  * The class for the Menu screen
+ *
+ * @author Matt Humphrey, 2018
  */
 class MenuScreen extends Screen {
     //Singleton initializer for MenuScreen
