@@ -1,6 +1,9 @@
 import javax.swing.*;
 import java.io.IOException;
 
+/**
+ * The ScreenManager class manages the different screens for the device
+ */
 public class ScreenManager extends JFrame {
 
     private JLabel background = new JLabel();
@@ -12,8 +15,19 @@ public class ScreenManager extends JFrame {
 
     private Screen currentScreen;
 
+    private final int frameWidth = 366;
+    private final int frameHeight = 635;
+
+    /**
+     * Creates the off screen (blank starting screen)
+     */
     OffScreen off = new OffScreen(this);
 
+    /**
+     * The entry point of application.
+     *
+     * @param args the input arguments
+     */
     public static void main(String[] args) {
         try {
             new ScreenManager().frame();
@@ -22,12 +36,16 @@ public class ScreenManager extends JFrame {
         }
     }
 
+    /**
+     * Create the frame and buttons for the XTrek
+     *
+     * @throws IOException Exception will be thrown when a resource from one of the screens may not be found
+     */
     private void frame() throws IOException {
-        setSize(366, 635);
+        setSize(frameWidth, frameHeight);
         setResizable(false);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
-
 
         background.setIcon(new ImageIcon(this.getClass().getResource("images/xtrek_on_template.png")));
         background.setBounds(0, 0, 360, 600);
@@ -86,6 +104,11 @@ public class ScreenManager extends JFrame {
     }
 
 
+    /**
+     * Change current screen.
+     *
+     * @param next the screen to change to
+     */
     void changeCurrentScreen(Screen next) {
         if (currentScreen != null) {
             remove(currentScreen);
@@ -96,7 +119,6 @@ public class ScreenManager extends JFrame {
         validate();
         currentScreen = next;
     }
-
 
     private void onOffPressed() {
         currentScreen.onOff();
@@ -124,25 +146,38 @@ public class ScreenManager extends JFrame {
     }
 }
 
+/**
+ * Screen class, difference screens of the XTrek extend and
+ * overwrite methods to edit functionality for the specific screen
+ */
 abstract class Screen extends JPanel {
     static ScreenManager sm;
 
+    /**
+     * Instantiates a new Screen.
+     *
+     * @param sm the screen manager
+     */
     Screen(ScreenManager sm) {
         Screen.sm = sm;
     }
 
+
     abstract void showScreen();
-
     abstract void plus();
-
     abstract void minus();
-
     abstract void select();
 
+    /**
+     * Menu button returns the device to the menu screen
+     */
     void menu() {
         sm.changeCurrentScreen(MenuScreen.getInstance());
     }
 
+    /**
+     * Turns the device on and off
+     */
     void onOff() {
         sm.changeCurrentScreen(sm.off);
     }
