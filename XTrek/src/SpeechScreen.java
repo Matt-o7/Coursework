@@ -40,75 +40,77 @@ public class SpeechScreen extends Screen {
         //Initialises the sounds for each option
         speech = Speech.generateSpeech( token,  "English",   "en-US"
                 , "Female", "(en-GB, Susan, Apollo)", FORMAT );
-        Speech.writeData(speech, "english.wav");
+        Speech.writeData(speech, "res/audio/english.wav");
 
         speech = Speech.generateSpeech( token,  "Français",   "Fr-FR"
                 , "Female", "(fr-FR, Julie, Apollo)", FORMAT );
-        Speech.writeData(speech, "french.wav");
+        Speech.writeData(speech, "res/audio/french.wav");
 
         speech = Speech.generateSpeech( token,  "Deutsch",   "de-DE"
                 , "Male", "(de-DE, Stefan, Apollo)", FORMAT );
-        Speech.writeData(speech, "german.wav");
+        Speech.writeData(speech, "res/audio/german.wav");
 
         speech = Speech.generateSpeech( token,  "Italiano",   "it-IT"
                 , "Male", "(it-IT, Cosimo, Apollo)", FORMAT );
-        Speech.writeData(speech, "italian.wav");
+        Speech.writeData(speech, "res/audio/italian.wav");
 
         speech = Speech.generateSpeech( token,  "Español",   "es-ES"
                 , "Female", "(es-ES, Laura, Apollo)", FORMAT );
-        Speech.writeData(speech, "spanish.wav");
+        Speech.writeData(speech, "res/audio/spanish.wav");
 
         //The location of the screen on the device
         int x = 87;
         int y = 224;
+        int buttonWidth = 185;
+        int buttonHeight = 38;
 
         //Creates each language option on the screen
         off.setIcon(new ImageIcon(this.getClass().getResource("images/off.png")));
-        off.setBounds(x, y, 185, 38);
+        off.setBounds(x, y, buttonWidth, buttonHeight);
         add(off);
 
         english.setIcon(new ImageIcon(this.getClass().getResource("images/english.png")));
-        english.setBounds(x, y+(1*38), 185, 38);
+        english.setBounds(x, y+(1*38), buttonWidth, buttonHeight);
         add(english);
 
         french.setIcon(new ImageIcon(this.getClass().getResource("images/french.png")));
-        french.setBounds(x, y+(2*38), 185, 38);
+        french.setBounds(x, y+(2*38), buttonWidth, buttonHeight);
         add(french);
 
         german.setIcon(new ImageIcon(this.getClass().getResource("images/german.png")));
-        german.setBounds(x, y+(3*38), 185, 38);
+        german.setBounds(x, y+(3*38), buttonWidth, buttonHeight);
         add(german);
 
         italian.setIcon(new ImageIcon(this.getClass().getResource("images/italian.png")));
-        italian.setBounds(x, y+(4*38), 185, 38);
+        italian.setBounds(x, y+(4*38), buttonWidth, buttonHeight);
         add(italian);
 
         spanish.setIcon(new ImageIcon(this.getClass().getResource("images/spanish.png")));
-        spanish.setBounds(x, y+(5*38), 185, 38);
+        spanish.setBounds(x, y+(5*38), buttonWidth, buttonHeight);
         add(spanish);
 
         offO.setIcon(new ImageIcon(this.getClass().getResource("images/offO.png")));
-        offO.setBounds(x, y, 185, 38);
+        offO.setBounds(x, y, buttonWidth, buttonHeight);
         add(offO);
 
         englishO.setIcon(new ImageIcon(this.getClass().getResource("images/englishO.png")));
-        englishO.setBounds(x, y+(1*38), 185, 38);
+        englishO.setBounds(x, y+(1*38), buttonWidth, buttonHeight);
         add(englishO);
 
         frenchO.setIcon(new ImageIcon(this.getClass().getResource("images/frenchO.png")));
-        frenchO.setBounds(x, y+(2*38), 185, 38);
+        frenchO.setBounds(x, y+(2*38), buttonWidth, buttonHeight);
         add(frenchO);
 
         germanO.setIcon(new ImageIcon(this.getClass().getResource("images/germanO.png")));
-        germanO.setBounds(x, y+(3*38), 185, 38);
+        germanO.setBounds(x, y+(3*38), buttonWidth, buttonHeight);
         add(germanO);
 
         italianO.setIcon(new ImageIcon(this.getClass().getResource("images/italianO.png")));
-        italianO.setBounds(x, y+(4*38), 185, 38);
+        italianO.setBounds(x, y+(4*38), buttonWidth, buttonHeight);
         add(italianO);
 
         spanishO.setIcon(new ImageIcon(this.getClass().getResource("images/spanishO.png")));
-        spanishO.setBounds(x, y+(5*38), 185, 38);
+        spanishO.setBounds(x, y+(5*38), buttonWidth, buttonHeight);
         add(spanishO);
 
 
@@ -207,23 +209,23 @@ public class SpeechScreen extends Screen {
     void select() {
 
         if (english.isVisible() == false){
-            AudioInputStream stm = Sound.setupStream( "english.wav" );
+            AudioInputStream stm = Sound.setupStream( "res/audio/english.wav" );
             Sound.playStream( stm, Sound.readStream( stm ) );
         }
         else if (french.isVisible() == false){
-            AudioInputStream stm = Sound.setupStream( "french.wav" );
+            AudioInputStream stm = Sound.setupStream( "res/audio/french.wav" );
             Sound.playStream( stm, Sound.readStream( stm ) );
         }
         else if (german.isVisible() == false){
-            AudioInputStream stm = Sound.setupStream( "german.wav" );
+            AudioInputStream stm = Sound.setupStream( "res/audio/german.wav" );
             Sound.playStream( stm, Sound.readStream( stm ) );
         }
         else if (italian.isVisible() == false){
-            AudioInputStream stm = Sound.setupStream( "italian.wav" );
+            AudioInputStream stm = Sound.setupStream( "res/audio/italian.wav" );
             Sound.playStream( stm, Sound.readStream( stm ) );
         }
         else if (spanish.isVisible() == false){
-            AudioInputStream stm = Sound.setupStream( "spanish.wav" );
+            AudioInputStream stm = Sound.setupStream( "res/audio/spanish.wav" );
             Sound.playStream( stm, Sound.readStream( stm ) );
         }
     }
