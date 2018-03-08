@@ -1,25 +1,51 @@
 import javax.swing.*;
 import java.awt.*;
 
+/*
+ * SatelliteScreen, which is a screen displaying
+ * information regarding GPS.
+ *
+ * Liem Pham, 2018.
+ */
+
 class SatelliteScreen extends Screen {
-    //Singleton initializer of SatelliteScreen
+
+    //Singleton initializer of SatelliteScreen.
     private static SatelliteScreen satelliteInstance;
 
-    private static JLabel labelting = new JLabel();;
+    //Where the GPS information will be displayed.
+    //Resets the text from a previous access of the SatelliteScreen.
+    private static JLabel position = new JLabel("");
+
+    //Removes "Magic Numbers" from deep within code.
+    private final static String GEOPOSITION = "/dev/cu.usbmodem1411";
+    private final int CO_X = 110;
+    private final int CO_Y = 180;
+    private final int CO_W = 170;
+    private final int CO_H = 300;
+    private final int F_S = 18;
 
     private SatelliteScreen(ScreenManager sm) {
+        /*
+         * Determines the base details of the screen
+         * when the ScreenManager calls SatelliteScreen.
+         *
+         * @returns the base of the SatelliteScreen which will be
+         *         displayed when called by ScreenManager.
+         */
 
         super(sm);
         setLayout(null);
     }
 
-    static SatelliteScreen getInstance(){
+    static SatelliteScreen getInstance() {
         /*
          * Returns the single instance of KeyboardScreen
          *
          * @return the instance of KeyboardScreen
          */
-        if(satelliteInstance == null){
+
+        if(satelliteInstance == null) {
             satelliteInstance = new SatelliteScreen(sm);
         }
         return satelliteInstance;
@@ -27,28 +53,40 @@ class SatelliteScreen extends Screen {
 
     @Override
     void showScreen() {
-        labelting.setText("");
-        labelting.setText(OSXUblox7q.reader("/dev/cu.usbmodem1411"));
-        labelting.setBounds(110, 180, 170, 300);
-        labelting.setFont(new Font("Calibri", Font.BOLD, 18));
+        /*
+         * Returns the appropriate screen when the "Satellite"
+         * tab is selected on the home screen.
+         *
+         * @return the entire SatelliteScreen required.
+         */
 
-        add(labelting, BorderLayout.CENTER);
+        //Gets the longitude and latitude from a method in GeoPosition.java.
+        position.setText(GeoPosition.reader(GEOPOSITION));
+
+        position.setBounds(CO_X, CO_Y, CO_W, CO_H);
+        position.setFont(new Font("Calibri", Font.BOLD, F_S));
+
+        add(position, BorderLayout.CENTER);
     }
+
 
     @Override
     void plus() {
 
     }
 
+
     @Override
     void minus() {
 
     }
 
+
     @Override
     void select() {
 
     }
+
 
 }
 
