@@ -6,14 +6,14 @@ public class TripScreen extends Screen {
     private static TripScreen tripInstance;
 
     public String trip_odem = "0.0";
-    public String speed = "SHOW UP BITCH";
+    public String speed = "0.0";
     public String minutes = "0";
     public String seconds = "0";
 
     JLabel screen = new JLabel();
     JLabel j_odem = new JLabel(trip_odem);
-    JLabel j_speed = new JLabel(speed);
-    JLabel j_time = new JLabel(minutes + " minutes " + seconds + "seconds");
+    JLabel j_speed = new JLabel(speed + "m/h");
+    JLabel j_time = new JLabel(minutes + " min " + seconds + "secs");
     //public String moving_time = "";
 
     private TripScreen(ScreenManager sm) {
