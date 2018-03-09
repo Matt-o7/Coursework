@@ -8,18 +8,22 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
+/**
+ * @author Dennis Harrop
+ */
 public class MapScreen extends Screen {
     private static MapScreen ms;
 
     private BufferedImage img;
     JLabel label;
     int zoom = 9;
-    double lat = 50.737730, lon = -3.532626;
+    double lat = 50.735459, lon = -3.533207;
     int rot;
     String path;
 
 
     private static JSONParser parser = new JSONParser();
+
     static MapScreen getInstance() {
         //If the instance has not been created yet, then create a new one
         if (ms == null) {
@@ -27,6 +31,7 @@ public class MapScreen extends Screen {
         }
         return ms;
     }
+
     private MapScreen(ScreenManager sm) {
         super(sm);
 
@@ -44,6 +49,15 @@ public class MapScreen extends Screen {
         ArrayList<Step> steps = getSteps(Directions.ORIGIN, Directions.DESTINATION, Directions.REGION, Directions.MODE);
         path = getPolyLine(steps);
         img = MapView.updateImage(lat, lon, zoom, "370x635", path);
+
+        // Testing direction speech output
+        new Thread(() -> {
+            for (Step s : steps) {
+                System.out.println(s.instruction);
+                SpeechScreen.generateSpeechSound(s.instruction, "english");
+            }
+        }).start();
+
     }
 
     @Override
@@ -69,7 +83,6 @@ public class MapScreen extends Screen {
             zoom = 21;
             return;
         }
-        System.out.println("Map zooming in " + zoom);
         zoom++;
         img = MapView.updateImage(lat, lon, zoom, "370x635", path);
         label.setIcon(new ImageIcon(img));
@@ -81,7 +94,7 @@ public class MapScreen extends Screen {
             zoom = 1;
             return;
         }
-        System.out.println("Map zooming out");
+
         zoom--;
         img = MapView.updateImage(lat, lon, zoom, "370x635", path);
         label.setIcon(new ImageIcon(img));
@@ -110,7 +123,7 @@ public class MapScreen extends Screen {
         JSONObject jsonObject = obj;
         JSONArray arr = (JSONArray) ((JSONObject) ((JSONArray) ((JSONObject) ((JSONArray) jsonObject.get("routes")).get(0)).get("legs")).get(0)).get("steps");
 
-        String overview_polyline = (String) ((JSONObject)((JSONObject) ((JSONArray) jsonObject.get("routes")).get(0)).get("overview_polyline")).get("points");
+        String overview_polyline = (String) ((JSONObject) ((JSONObject) ((JSONArray) jsonObject.get("routes")).get(0)).get("overview_polyline")).get("points");
         int size = arr.size();
 
         for (int i = 0; i < size; i++) {
@@ -133,7 +146,7 @@ public class MapScreen extends Screen {
     }
 
     public static String getPolyLine(ArrayList<Step> steps) {
-       return steps.get(0).polyline;
+        return steps.get(0).polyline;
     }
 }
 

@@ -29,6 +29,7 @@ public class Directions {
                     + "&" + "region"      + "=" + region
                     + "&" + "mode"        + "=" + mode
                     + "&" + "key"         + "=" + "AIzaSyDDbfI4zefWjAZ5NpNdFLGPhbw1YJjKVIo"
+                    + "&language=" + SpeechScreen.getLanguage().substring(0,1)
             );
             final byte[] body
                     = {};
