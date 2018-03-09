@@ -1,10 +1,15 @@
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
-
+/**
+ * The TripScreen class manages the TripComputer page in the XTrek.
+ *
+ * @author Gabriel Copat, 2018
+ */
 public class TripScreen extends Screen {
-    //Singleton initializer of TripScreen
+    //Singleton initialiser of TripScreen
     private static TripScreen tripInstance;
 
+    //Placeholders until other values come from other packages.
     public String trip_odem = "0.0";
     public String speed = "0.0";
     public String minutes = "0";
@@ -37,9 +42,9 @@ public class TripScreen extends Screen {
         j_time.setText(minutes + " minutes " + seconds + "seconds");
 
         add(screen);
-        add(j_odem);
-        add(j_speed);
-        add(j_time);
+        screen.add(j_odem);
+        screen.add(j_speed);
+        screen.add(j_time);
 
 
     }
@@ -72,10 +77,7 @@ public class TripScreen extends Screen {
     }
 
     void showScreen() {
-        screen.setIcon(new ImageIcon(getClass().getResource("/images/tripComputerScreen.png")));
-        j_odem.setText(trip_odem);
-        j_speed.setText(speed);
-        j_time.setText(minutes + " minutes " + seconds + "seconds");
+        
     }
 
 
