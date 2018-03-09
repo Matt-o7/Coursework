@@ -20,7 +20,7 @@ public class MapScreen extends Screen {
     double lat = 50.735459, lon = -3.533207;
     int rot;
     String path;
-
+    Thread test;
 
     private static JSONParser parser = new JSONParser();
 
@@ -51,13 +51,10 @@ public class MapScreen extends Screen {
         img = MapView.updateImage(lat, lon, zoom, "370x635", path);
 
         // Testing direction speech output
-        new Thread(() -> {
-            for (Step s : steps) {
-                System.out.println(s.instruction);
-                SpeechScreen.generateSpeechSound(s.instruction, "english");
-            }
-        }).start();
-
+        test = new Thread(() -> {
+            SpeechScreen.generateSpeechSound(steps.get(0).instruction, "english");
+        });
+        test.start();
     }
 
     @Override
