@@ -1,6 +1,10 @@
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
-
+/**
+ * The KeyboardScreem class manages the WhereTo page in the XTrek.
+ *
+ * @author Gabriel Copat, 2018
+ */
 public class KeyboardScreen extends Screen {
     //Singleton initializer of KeyboardScreen
     private static KeyboardScreen keyboardInstance;
