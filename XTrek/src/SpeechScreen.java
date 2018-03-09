@@ -2,6 +2,9 @@ import javax.sound.sampled.AudioInputStream;
 import javax.swing.*;
 import java.awt.*;
 import java.nio.file.*;
+/**
+ * @author Philippe Roubert
+ */
 
 public class SpeechScreen extends Screen {
     //Singleton initializer of SpeechScreen
@@ -21,6 +24,7 @@ public class SpeechScreen extends Screen {
     JLabel italianO = new JLabel();
     JLabel spanishO = new JLabel();
 
+    static boolean hasInitialised = false;
     final static String KEY1 = "bc5d1a3f91ab43208f162ed2d2dd799c";
     final static String KEY2 = "e0d253267c6248ce875443df85049dd4";
     final static String FORMAT = "riff-16khz-16bit-mono-pcm";
@@ -36,6 +40,8 @@ public class SpeechScreen extends Screen {
 
         System.out.println("Initialisation");
         //Initialises the sounds for each option
+        hasInitialised = true;
+
         speech = Speech.generateSpeech(token, "English", "en-US"
                 , "Female", "(en-GB, Susan, Apollo)", FORMAT);
         Speech.writeData(speech, "res/audio/english.wav");
@@ -119,15 +125,11 @@ public class SpeechScreen extends Screen {
 
     public static void generateSpeechSound(String toBeSaid, String language) {
 
-        if (language != "off") {//&& toBeSaid.length() < 50) {
+        if (language != "off") {
             String filePathString = "res/audio/" + "command" + ".wav";
             Path path = Paths.get(filePathString);
 
 
-//            if (Files.exists(path)) {
-//                AudioInputStream stm = Sound.setupStream(filePathString);
-//                Sound.playStream(stm, Sound.readStream(stm));
-//            } else {
             if (language == "english") {
                 speech = Speech.generateSpeech(token, toBeSaid, "en-US"
                         , "Female", "(en-GB, Susan, Apollo)", FORMAT);
@@ -149,23 +151,23 @@ public class SpeechScreen extends Screen {
             Sound.playStream(stm, Sound.readStream(stm));
         }
 
-
-//        } else{
-//            System.out.println("Either speech is off or string is too long");
-//        }
     }
 
     public static String getLanguage() {
-        if (english.isVisible() == false) {
-            return "english";
-        } else if (french.isVisible() == false) {
-            return "french";
-        } else if (german.isVisible() == false) {
-            return "german";
-        } else if (italian.isVisible() == false) {
-            return "italian";
-        } else if (spanish.isVisible() == false) {
-            return "spanish";
+        if (hasInitialised == true) {
+            if (english.isVisible() == false) {
+                return "english";
+            } else if (french.isVisible() == false) {
+                return "french";
+            } else if (german.isVisible() == false) {
+                return "german";
+            } else if (italian.isVisible() == false) {
+                return "italian";
+            } else if (spanish.isVisible() == false) {
+                return "spanish";
+            } else {
+                return "off";
+            }
         } else {
             return "off";
         }
