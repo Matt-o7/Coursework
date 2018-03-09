@@ -17,6 +17,7 @@ public class ScreenManager extends JFrame {
 
     private Screen currentScreen;
 
+    //region Object locations
     private final int frameWidth = 366;
     private final int frameHeight = 635;
 
@@ -55,6 +56,7 @@ public class ScreenManager extends JFrame {
     private final int menuBtnY = 70;
     private final int menuBtnWidth = 30;
     private final int menuBtnHeight = 65;
+    //endregion
 
     /**
      * Creates the off screen (blank starting screen)
