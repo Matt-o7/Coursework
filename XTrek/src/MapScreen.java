@@ -22,6 +22,12 @@ public class MapScreen extends Screen {
     String path;
     Thread test;
 
+    private final int CENTER_X;
+    private final int CENTER_Y;
+    private final int DOT_DIAM = 10;
+    private final int DOT_OFFSET_Y = 15;
+
+
     private static JSONParser parser = new JSONParser();
 
     static MapScreen getInstance() {
@@ -34,11 +40,12 @@ public class MapScreen extends Screen {
 
     private MapScreen(ScreenManager sm) {
         super(sm);
-
         img = MapView.updateImage(lat, lon, zoom, "370x635", path);
         setBackground(new Color(163, 204, 255));
         label = new JLabel(new ImageIcon(img));
         add(label);
+        CENTER_X = sm.getWidth() / 2;
+        CENTER_Y = sm.getHeight() / 2;
     }
 
     @Override
@@ -51,9 +58,7 @@ public class MapScreen extends Screen {
         img = MapView.updateImage(lat, lon, zoom, "370x635", path);
 
         // Testing direction speech output
-        test = new Thread(() -> {
-            SpeechScreen.generateSpeechSound(steps.get(0).instruction, "english");
-        });
+        test = new Thread(() -> SpeechScreen.generateSpeechSound(steps.get(0).instruction, "english"));
         test.start();
     }
 
@@ -61,15 +66,15 @@ public class MapScreen extends Screen {
     public void paint(Graphics g) {
         super.paint(g);
         g.setColor(Color.RED);
-        g.fillOval((int) g.getClipBounds().getWidth() / 2 - 5, (int) g.getClipBounds().getHeight() / 2 + 20, 10, 10);
+        g.fillOval(CENTER_X - DOT_DIAM / 2, CENTER_Y + DOT_OFFSET_Y, DOT_DIAM, DOT_DIAM);
     }
 
 
     @Override
     public void paintComponent(Graphics g) {
         Graphics2D g2d = (Graphics2D) g;
-        int w2 = getWidth() / 2 + 5;
-        int h2 = getHeight() / 2 + 15;
+        int w2 = CENTER_X + DOT_DIAM / 2;
+        int h2 = CENTER_Y + DOT_OFFSET_Y;
         g2d.rotate(Math.toRadians(rot), w2, h2);
         super.paintComponent(g);
     }
