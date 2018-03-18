@@ -18,44 +18,44 @@ public class ScreenManager extends JFrame {
     private Screen currentScreen;
 
     //region Object locations
-    private final int frameWidth = 366;
-    private final int frameHeight = 635;
+    private final int FRAME_WIDTH = 366;
+    private final int FRAME_HEIGHT = 635;
 
     //The location and sizes of the background image
-    private final int bgX = 0;
-    private final int bgY = 0;
-    private final int bgWidth = 360;
-    private final int bgHeight = 600;
+    private final int BG_X = 0;
+    private final int BG_Y = 0;
+    private final int BG_WIDTH = 360;
+    private final int BG_HEIGHT = 600;
 
     //The location and sizes of the off button
-    private final int offBtnX = 234;
-    private final int offBtnY = 106;
-    private final int offBtnWidth = 45;
-    private final int offBtnHeight = 45;
+    private final int OFF_BTN_X = 234;
+    private final int OFF_BTN_Y = 106;
+    private final int OFF_BTN_WIDTH = 45;
+    private final int OFF_BTN_HEIGHT = 45;
 
     //The location and sizes of the plus button
-    private final int plusBtnX = 10;
-    private final int plusBtnY = 60;
-    private final int plusBtnWidth = 30;
-    private final int plusBtnHeight = 55;
+    private final int PLUS_BTN_X = 10;
+    private final int PLUS_BTN_Y = 60;
+    private final int PLUS_BTN_WIDTH = 30;
+    private final int PLUS_BTN_HEIGHT = 55;
 
     //The location and sizes of the minus button
-    private final int minusBtnX = 10;
-    private final int minusBtnY = 115;
-    private final int minusBtnWidth = 30;
-    private final int minusBtnHeight = 55;
+    private final int MINUS_BTN_X = 10;
+    private final int MINUS_BTN_Y = 115;
+    private final int MINUS_BTN_WIDTH = 30;
+    private final int MINUS_BTN_HEIGHT = 55;
 
     //The location and sizes of the select button
-    private final int selectBtnX = 10;
-    private final int selectBtnY = 190;
-    private final int selectBtnWidth = 30;
-    private final int selectBtnHeight = 65;
+    private final int SELECT_BTN_X = 10;
+    private final int SELECT_BTN_Y = 190;
+    private final int SELECT_BTN_WIDTH = 30;
+    private final int SELECT_BTN_HEIGHT = 65;
 
     //The location and sizes of the menu button
-    private final int menuBtnX = 320;
-    private final int menuBtnY = 70;
-    private final int menuBtnWidth = 30;
-    private final int menuBtnHeight = 65;
+    private final int MENU_BTN_X = 320;
+    private final int MENU_BTN_Y = 70;
+    private final int MENU_BTN_WIDTH = 30;
+    private final int MENU_BTN_HEIGHT = 65;
     //endregion
 
     /**
@@ -82,18 +82,18 @@ public class ScreenManager extends JFrame {
      * @throws IOException Exception will be thrown when a resource from one of the screens may not be found
      */
     private void frame() throws IOException {
-        setSize(frameWidth, frameHeight);
+        setSize(FRAME_WIDTH, FRAME_HEIGHT);
         setResizable(false);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
 
         background.setIcon(new ImageIcon(this.getClass().getResource("images/xtrek_on_template.png")));
-        background.setBounds(bgX, bgY, bgWidth, bgHeight);
+        background.setBounds(BG_X, BG_Y, BG_WIDTH, BG_HEIGHT);
         add(background);
 
 
         //Creates the onOffButton
-        onOffButton.setBounds(offBtnX, offBtnY, offBtnWidth, offBtnHeight);
+        onOffButton.setBounds(OFF_BTN_X, OFF_BTN_Y, OFF_BTN_WIDTH, OFF_BTN_HEIGHT);
         onOffButton.setBorder(null);
         onOffButton.addActionListener(e -> {
             try {
@@ -107,7 +107,7 @@ public class ScreenManager extends JFrame {
         add(onOffButton);
 
         //Creates the plusButton
-        plusButton.setBounds(plusBtnX, plusBtnY, plusBtnWidth, plusBtnHeight);
+        plusButton.setBounds(PLUS_BTN_X, PLUS_BTN_Y, PLUS_BTN_WIDTH, PLUS_BTN_HEIGHT);
         plusButton.setBorder(null);
         plusButton.addActionListener(e -> plusButtonPressed());
         plusButton.setOpaque(false);
@@ -115,7 +115,7 @@ public class ScreenManager extends JFrame {
         add(plusButton);
 
         //Creates the minusButton
-        minusButton.setBounds(minusBtnX, minusBtnY, minusBtnWidth, minusBtnHeight);
+        minusButton.setBounds(MINUS_BTN_X, MINUS_BTN_Y, MINUS_BTN_WIDTH, MINUS_BTN_HEIGHT);
         minusButton.setBorder(null);
         minusButton.addActionListener(e -> minusButtonPressed());
         minusButton.setOpaque(false);
@@ -123,7 +123,7 @@ public class ScreenManager extends JFrame {
         add(minusButton);
 
         //Creates the selectButton
-        selectButton.setBounds(selectBtnX, selectBtnY, selectBtnWidth,selectBtnHeight);
+        selectButton.setBounds(SELECT_BTN_X, SELECT_BTN_Y, SELECT_BTN_WIDTH, SELECT_BTN_HEIGHT);
         selectButton.setBorder(null);
         selectButton.addActionListener(e -> selectButtonPressed());
         selectButton.setOpaque(false);
@@ -131,13 +131,12 @@ public class ScreenManager extends JFrame {
         add(selectButton);
 
         //Creates the menuButton
-        menuButton.setBounds(menuBtnX, menuBtnY, menuBtnWidth, menuBtnHeight);
+        menuButton.setBounds(MENU_BTN_X, MENU_BTN_Y, MENU_BTN_WIDTH, MENU_BTN_HEIGHT);
         menuButton.setBorder(null);
         menuButton.addActionListener(e -> menuButtonPressed());
         menuButton.setOpaque(false);
         menuButton.setContentAreaFilled(false);
         add(menuButton);
-
 
         changeCurrentScreen(off);
         setVisible(true);
@@ -204,8 +203,11 @@ abstract class Screen extends JPanel {
 
 
     abstract void showScreen();
+
     abstract void plus();
+
     abstract void minus();
+
     abstract void select();
 
     /**
