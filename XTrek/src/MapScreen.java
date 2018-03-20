@@ -7,6 +7,10 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+import java.util.TimerTask;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author Dennis Harrop
@@ -27,6 +31,7 @@ public class MapScreen extends Screen {
     private final int DOT_DIAM = 10;
     private final int DOT_OFFSET_Y = 15;
 
+    Location prev, cur;
 
     private static JSONParser parser = new JSONParser();
 
@@ -38,6 +43,8 @@ public class MapScreen extends Screen {
         return ms;
     }
 
+    ScheduledExecutorService executor;
+
     private MapScreen(ScreenManager sm) {
         super(sm);
         img = MapView.updateImage(lat, lon, zoom, "370x635", path);
@@ -47,6 +54,17 @@ public class MapScreen extends Screen {
         CENTER_X = sm.getWidth() / 2;
         CENTER_Y = sm.getHeight() / 2;
     }
+
+    Runnable updateMap = new Runnable() {
+        @Override
+        public void run() {
+            if (prev.lat == cur.lat && prev.lng == cur.lng)
+                return;
+            img = MapView.updateImage(lat, lon, zoom, "370x635", path);
+            label.setIcon(new ImageIcon(img));
+            sm.repaint();
+        }
+    };
 
     @Override
     void showScreen() {
@@ -60,6 +78,9 @@ public class MapScreen extends Screen {
         // Testing direction speech output
         test = new Thread(() -> SpeechScreen.generateSpeechSound(steps.get(0).instruction, "english"));
         test.start();
+
+        executor = Executors.newScheduledThreadPool(1);
+        executor.scheduleAtFixedRate(updateMap, 0, 3, TimeUnit.SECONDS);
     }
 
     @Override
@@ -105,11 +126,18 @@ public class MapScreen extends Screen {
     @Override
     public void menu() {
         sm.changeCurrentScreen(MenuScreen.getInstance());
+        executor.shutdown();
     }
 
     @Override
     public void select() {
 
+    }
+
+    @Override
+    void onOff() {
+        super.onOff();
+        executor.shutdown();
     }
 
     public static ArrayList<Step> getSteps(String origin, String dest, String region, String mode) {
