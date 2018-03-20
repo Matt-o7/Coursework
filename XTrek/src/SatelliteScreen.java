@@ -1,5 +1,12 @@
+import javax.imageio.ImageIO;
 import javax.swing.*;
+import javax.swing.border.Border;
 import java.awt.*;
+import java.io.IOException;
+import java.lang.reflect.Method;
+import java.net.URL;
+import java.util.List;
+import java.util.concurrent.Executors;
 
 /**
  * SatelliteScreen, which is a screen displaying
@@ -13,12 +20,17 @@ class SatelliteScreen extends Screen {
     //Singleton initializer of SatelliteScreen.
     private static SatelliteScreen satelliteInstance;
 
+    List<String> matty;
+
     //Where the GPS information will be displayed.
     //Resets the text from a previous access of the SatelliteScreen.
-    private static JLabel position = new JLabel("");
+    private static JLabel positionOne = new JLabel("");
+    private static JLabel positionTwo = new JLabel("");
+    private static JLabel aboutImage = new JLabel();
 
     //Removes "Magic Numbers" from deep within code.
     private final static String GEOPOSITION = "/dev/cu.usbmodem1411";
+
     private final int CO_X = 110;
     private final int CO_Y = 180;
     private final int CO_W = 170;
@@ -38,6 +50,12 @@ class SatelliteScreen extends Screen {
 
         super(sm);
         setLayout(null);
+
+        System.out.println("Created");
+
+        new Thread(new GeoPosition()).start();
+
+
     }
 
     static SatelliteScreen getInstance() {
@@ -63,16 +81,49 @@ class SatelliteScreen extends Screen {
          */
 
         //Gets the longitude and latitude from a method in GeoPosition.java.
-        position.setText(GeoPosition.reader(GEOPOSITION));
 
-        position.setBounds(CO_X, CO_Y, CO_W, CO_H);
-        position.setFont(new Font("Calibri", Font.BOLD, F_S));
 
-        add(position, BorderLayout.CENTER);
+        //System.out.println(GeoPosition.reader(GEOPOSITION));
+        //System.out.println(GeoPosition.reader(GEOPOSITION));
+
+        //Use one instance of GeoPosition everytime satellite screen is selected
+
+        final List<String> POSITIONGEO = GeoPosition.reader(GEOPOSITION);
+
+        if ((POSITIONGEO).get(0) == "S") {
+            positionOne.setText("POSITION NOT");
+            positionTwo.setText("DETERMINED");
+            positionOne.setBounds(CO_X, CO_Y, CO_W, CO_H);
+            positionTwo.setBounds(118, 200, CO_W, CO_H);
+
+        } else if (POSITIONGEO.get(0) == "D") {
+            positionOne.setText("NO GPS DEVICE");
+            positionTwo.setText("INSERTED");
+            positionOne.setBounds(CO_X, CO_Y, CO_W, CO_H);
+            positionTwo.setBounds(135, 200, CO_W, CO_H);
+
+        } else {
+            positionOne.setText(POSITIONGEO.get(0) + " " + POSITIONGEO.get(1));
+            positionTwo.setText(POSITIONGEO.get(2) + " " + POSITIONGEO.get(3));
+            positionOne.setBounds(130, 160, CO_W, CO_H);
+            positionTwo.setBounds(140, 200, CO_W, CO_H);
+        }
+
+        positionOne.setFont(new Font("Calibri", Font.BOLD, F_S));
+        positionTwo.setFont(new Font("Calibri", Font.BOLD, F_S));
+        add(positionOne, BorderLayout.CENTER);
+        add(positionTwo, BorderLayout.CENTER);
+        /*
+        ImageIcon loading = new ImageIcon("images/ajax-loader.gif");
+
+        JLabel hello1 = new JLabel("loading... ", loading, JLabel.CENTER);
+        //add(hello1);
+        hello1.setBounds(CO_X, CO_Y, CO_W, CO_H);
+        add(hello1, BorderLayout.CENTER);*/
+
     }
 
-
-    @Override
+        @Override
     void plus() {
 
     }
@@ -86,6 +137,7 @@ class SatelliteScreen extends Screen {
 
     @Override
     void select() {
+        System.out.println("HELLO WORLD");
 
     }
 

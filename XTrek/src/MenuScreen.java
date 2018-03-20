@@ -238,6 +238,8 @@ class MenuScreen extends Screen {
 
         aboutLabel.setBounds(RIGHT_X, BOTTOM_ROW_Y, LABEL_WIDTH, LABEL_HEIGHT);
         add(aboutLabel);
+
+        SatelliteScreen.getInstance();
     }
 
     /**
