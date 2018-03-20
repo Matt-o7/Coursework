@@ -7,7 +7,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
-import java.util.TimerTask;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -31,6 +30,8 @@ public class MapScreen extends Screen {
     private final int DOT_DIAM = 10;
     private final int DOT_OFFSET_Y = 15;
 
+    public ArrayList<Step> steps;
+
     Location prev, cur;
 
     private static JSONParser parser = new JSONParser();
@@ -45,6 +46,12 @@ public class MapScreen extends Screen {
 
     ScheduledExecutorService executor;
 
+    public void setDestination(String destination) {
+        steps = getSteps(Directions.ORIGIN, destination, Directions.REGION, Directions.MODE);
+        path = getPolyLine(steps);
+        img = MapView.updateImage(lat, lon, zoom, "370x635", path);
+    }
+
     private MapScreen(ScreenManager sm) {
         super(sm);
         img = MapView.updateImage(lat, lon, zoom, "370x635", path);
@@ -58,7 +65,7 @@ public class MapScreen extends Screen {
     Runnable updateMap = new Runnable() {
         @Override
         public void run() {
-            if (prev.lat == cur.lat && prev.lng == cur.lng)
+            if (prev.lat == lat && prev.lng == lon)
                 return;
             img = MapView.updateImage(lat, lon, zoom, "370x635", path);
             label.setIcon(new ImageIcon(img));
@@ -66,14 +73,21 @@ public class MapScreen extends Screen {
         }
     };
 
+//    private int getRot() {
+//        Location cur = new Location(lat, lon);
+//        if (cur.equals(prev))
+//            return 0;
+//        double x = Math.abs(prev.lat - lat);
+//        double y = Math.abs(prev.lng - lon);
+//
+//    }
+
     @Override
     void showScreen() {
         img = MapView.updateImage(lat, lon, zoom, "370x635", path);
         label.setIcon(new ImageIcon(img));
 
-        ArrayList<Step> steps = getSteps(Directions.ORIGIN, Directions.DESTINATION, Directions.REGION, Directions.MODE);
-        path = getPolyLine(steps);
-        img = MapView.updateImage(lat, lon, zoom, "370x635", path);
+        setDestination(Directions.DESTINATION);
 
         // Testing direction speech output
         test = new Thread(() -> SpeechScreen.generateSpeechSound(steps.get(0).instruction, "english"));
@@ -149,6 +163,9 @@ public class MapScreen extends Screen {
             obj = (JSONObject) parser.parse(s);
         } catch (ParseException e) {
             e.printStackTrace();
+//            ArrayList<Step> error = new ArrayList<>();
+//            error.add(new Step(-999,-999,999,999,"ERR0R",""));
+//            return error;
         }
         JSONObject jsonObject = obj;
         JSONArray arr = (JSONArray) ((JSONObject) ((JSONArray) ((JSONObject) ((JSONArray) jsonObject.get("routes")).get(0)).get("legs")).get(0)).get("steps");
@@ -218,5 +235,10 @@ class Location {
                 "lat=" + lat +
                 ", lng=" + lng +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        return (lat == ((Location) obj).lat && lng == ((Location) obj).lng);
     }
 }
