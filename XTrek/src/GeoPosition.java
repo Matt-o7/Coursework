@@ -101,10 +101,10 @@ public class GeoPosition implements Runnable {
         while(true) { // Or with a stop condition
             try {
                 List<String> s = SatelliteScreen.getInstance().matty;
-                System.out.println("Thread");
 
             } catch(Exception e) {
                 System.out.println("Exception caught : "+e);
+                break;
             }
         }
 

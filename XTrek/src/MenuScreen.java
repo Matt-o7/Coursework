@@ -240,6 +240,7 @@ class MenuScreen extends Screen {
         add(aboutLabel);
 
         SatelliteScreen.getInstance();
+        SpeechScreen.getInstance();
     }
 
     /**

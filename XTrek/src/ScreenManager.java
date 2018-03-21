@@ -87,7 +87,7 @@ public class ScreenManager extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
 
-        background.setIcon(new ImageIcon(this.getClass().getResource("images/xtrek_on_template.png")));
+        background.setIcon(new ImageIcon(this.getClass().getResource("images/xtrek_background.png")));
         background.setBounds(BG_X, BG_Y, BG_WIDTH, BG_HEIGHT);
         add(background);
 
