@@ -72,26 +72,26 @@ public class MapScreen extends Screen implements KeyListener {
     Runnable updateMap = new Runnable() {
         @Override
         public void run() {
-            if (prev.lat == lat && prev.lng == lng) {
-                return;
-            } else {
+
                 updateRot();
                 prev.lng = lng;
                 prev.lat = lat;
-            }
+
             if (SatelliteScreen.getInstance().positionGeo.size() >= 4) {
-                lng = Double.valueOf(SatelliteScreen.getInstance().positionGeo.get(1));
-                if (!SatelliteScreen.getInstance().positionGeo.get(0).toUpperCase().equals("NORTH"))
-                    lng *= -1;
-                lat = Double.valueOf(SatelliteScreen.getInstance().positionGeo.get(3));
-                if (!SatelliteScreen.getInstance().positionGeo.get(2).toUpperCase().equals("EAST"))
+                lat = Double.valueOf(SatelliteScreen.getInstance().positionGeo.get(0));
+                if (!SatelliteScreen.getInstance().positionGeo.get(1).toUpperCase().equals("N"))
+                    lat *= -1;
+                lng = Double.valueOf(SatelliteScreen.getInstance().positionGeo.get(2));
+                if (!SatelliteScreen.getInstance().positionGeo.get(3).toUpperCase().equals("E"))
                     lng *= -1;
             } else {
                 lng = 0;
                 lat = 0;
             }
+
             img = MapView.updateImage(lat, lng, zoom, "370x635", path);
             label.setIcon(new ImageIcon(img));
+
             for (Step s : steps) {
                 double x1 = s.start_location.lng;
                 double x2 = lng;
@@ -110,6 +110,7 @@ public class MapScreen extends Screen implements KeyListener {
                 }
 
             }
+
             sm.repaint();
         }
     };

@@ -36,7 +36,6 @@ public class SpeechScreen extends Screen{
 
         (new TokenRenewer()).start();
 
-        System.out.println("Speech Screen Initialisation");
         //Initialises the sounds for each option
         hasInitialised = true;
 
@@ -196,7 +195,6 @@ public class SpeechScreen extends Screen{
 
     public class TokenRenewer extends Thread{
         public void run(){
-            System.out.println("Access Token generated");
             token = Speech.renewAccessToken(KEY1);
             try {
                 Thread.sleep(1000 * 60 * 9); // 1000 milliseconds * 60 seconds * 9 minutes

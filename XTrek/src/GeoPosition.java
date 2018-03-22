@@ -23,11 +23,11 @@ public class GeoPosition implements Runnable {
     /* Represents the offset of the longitude and latitude retrieved from the usb device/OSXUblox.
      * As the data retrieved by the usb device/OSXUblox7 is not 100% accurate.
      */
-    private static final float LONGITUDE_OFFSET = (float) 0.295366;
-    private static final float LATITUDE_OFFSET = (float) 0.213123;
+    private static final float LONGITUDE_OFFSET = (float) 0.294885;
+    private static final float LATITUDE_OFFSET = (float) 0.213117;
 
     /* Reducing the format of the GPS data to be identical with the assessment document. */
-    private static final String LONGLAT_FORMAT = "%.4f";
+    private static final String LONGLAT_FORMAT = "%.6f";
 
     /* Removing magic numbers and strings from deep within the code. */
     private static final int LONGITUDE_IND = 1;
@@ -43,7 +43,7 @@ public class GeoPosition implements Runnable {
     static List<String> retrieveData(String fileName) {
         /**
          * Determines the longitude and latitude, depending on whether your location is
-         * detectable using a usb device/OSXUblox7 dongle and stores it inside a list.
+         * detectable using a usb device/OSXUblox7 dongle, and stores it inside a list.
          * Otherwise, two error messages will be stored in an individual list.
          *
          * @param fileName which is the usb device/OSXUblox7.
@@ -82,12 +82,12 @@ public class GeoPosition implements Runnable {
                         float lat = ((Float.parseFloat(listTemp.get(LATITUDE_IND)) / 100) + LATITUDE_OFFSET);
 
                         /* The numbers before the decimal point are the longitude/latitude, and the
-                         * numbers after the decimal point are the minutes, i.e 1649 = 16.49 minutes.
+                         * numbers after the decimal point are the minutes, i.e 164901 = 16.4901 minutes.
                          */
                         String longitude = String.format(LONGLAT_FORMAT, lon);
                         String latitude = String.format(LONGLAT_FORMAT, lat);
 
-                        /* Adding the longitude, direction of longitude, latitude and direction of latitude to a list. */
+                        /* Adds the longitude, direction of longitude, latitude and direction of latitude to a list. */
                         listPosition.add(longitude);
                         listPosition.add(listTemp.get(LONGITUDE_DIR));
                         listPosition.add(latitude);
@@ -111,8 +111,8 @@ public class GeoPosition implements Runnable {
     @Override
     public void run() {
         /**
-         * This function controls the operation of a thread and what data will be produced as a result
-         * of the thread and where it will be stored.
+         * This function controls the operation of a thread, what data will be produced as a result
+         * of the thread and where the data will be stored.
          *
          * @param args Unused.
          * @return data which SatelliteScreen will utilise to display useful information to the user.
@@ -129,7 +129,7 @@ public class GeoPosition implements Runnable {
                 Thread.sleep(THREAD_SLEEP);
 
             } catch (InterruptedException e) { /* Sends a statement to the console stating the relevant error. */
-                System.out.println("There has been an issue with gaining GPS data. Please retry entering the satellite section of this application.");
+                System.out.println("There has been an issue with gaining GPS data. Please retry by entering the satellite section of this application.");
                 break;
             }
         }
