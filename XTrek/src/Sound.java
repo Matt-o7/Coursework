@@ -1,80 +1,28 @@
-import java.io.File;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.InputStream;
 import javax.sound.sampled.AudioFormat;
-import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.DataLine;
 import javax.sound.sampled.SourceDataLine;
+
 /*
  * Sound generation. David Wakeling, 2018.
+ * Modifications: Philippe Roubert, 2018.
  */
+
 public class Sound {
-  private final static String FILENAME = "eastwood.wav";
-
-  /*
-   * Set up stream. 
-   */
-  static AudioInputStream setupStream( String name ) {
-    try {
-      File             file = new File( name );
-      AudioInputStream stm  = AudioSystem.getAudioInputStream( file );
-      return stm;
-    } catch ( Exception ex ) {
-      System.out.println( ex ); System.exit( 1 ); return null;
-    }
-  }
-
-  /*
-   * Read stream.
-   */
-  static ByteArrayOutputStream readStream( AudioInputStream stm ) {
-    try {
-      AudioFormat           af  = stm.getFormat();
-      ByteArrayOutputStream bos = new ByteArrayOutputStream();
-
-      int  bufferSize = (int) af.getSampleRate() * af.getFrameSize();
-      byte buffer[]   = new byte[ bufferSize ];
-
-      for (;;) {
-        int n = stm.read( buffer, 0, buffer.length );
-        if ( n > 0 ) {
-           bos.write( buffer, 0, n );
-        } else {
-          break;
-        }
-      }
-
-      return bos;
-    } catch ( Exception ex ) {
-      System.out.println( ex ); System.exit( 1 ); return null;
-    }
-  }
-
   /*
    * Play stream.
    */
-  static void playStream( AudioInputStream stm, ByteArrayOutputStream bos ) {
+  static void playStream( byte[] ba ) {
+
     try {
-      AudioFormat    af   = stm.getFormat();
-      byte[]         ba   = bos.toByteArray();
-      DataLine.Info  info = new DataLine.Info( SourceDataLine.class, af );
+      AudioFormat format = new AudioFormat(16000.0f, 16, 1, true,  false);
+      DataLine.Info  info = new DataLine.Info( SourceDataLine.class, format );
       SourceDataLine line = (SourceDataLine) AudioSystem.getLine( info );
-
-      line.open( af );
+      line.open( format );
       line.start();
-      line.write( ba, 0, ba.length );
+      line.write( ba, 64, ba.length-512 );
     } catch ( Exception ex ) {
-      System.out.println( ex ); System.exit( 1 );
+      System.out.println( "There was an issue with the given stream. Cannot read." );
     }
-  }
-
-  /*
-   * Generate sound.
-   */
-  public static void main( String[] argv ) {
-    AudioInputStream stm = setupStream( FILENAME );
-    playStream( stm, readStream( stm ) );
   }
 }
