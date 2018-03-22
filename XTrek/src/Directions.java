@@ -19,12 +19,11 @@ public class Directions {
             , String region
             , String mode ) {
         try {
-            final String encOrigin      = URLEncoder.encode( origin,      "UTF-8" );
-            final String encDestination = URLEncoder.encode( destination, "UTF-8" );
+            final String encDestination = URLEncoder.encode( DESTINATION, "UTF-8" );
             final String method = "GET";
             final String url
                     = ( "https://maps.googleapis.com/maps/api/directions/json"
-                    + "?" + "origin"      + "=" + encOrigin
+                    + "?" + "origin"      + "=" + origin
                     + "&" + "destination" + "=" + encDestination
                     + "&" + "region"      + "=" + region
                     + "&" + "mode"        + "=" + mode
@@ -51,11 +50,4 @@ public class Directions {
         }
     }
 
-    /*
-     * Find directions.
-     */
-    public static void main( String[] argv ) {
-        final byte[] ds = readDirections( ORIGIN, DESTINATION, REGION, MODE );
-        printDirections( ds );
-    }
 }

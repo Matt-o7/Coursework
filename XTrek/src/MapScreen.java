@@ -8,7 +8,6 @@ import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
-import java.security.Key;
 import java.util.ArrayList;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -23,7 +22,8 @@ public class MapScreen extends Screen implements KeyListener {
     private BufferedImage img;
     JLabel label;
     int zoom = 9;
-    double lat = 50.735459, lon = -3.533207;
+    double lat = 50.7371369, lon = -3.5351475;
+    Location prev = new Location(lat, lon);
     int rot;
     String path;
     Thread test;
@@ -33,7 +33,7 @@ public class MapScreen extends Screen implements KeyListener {
     private final int DOT_DIAM = 10;
     private final int DOT_OFFSET_Y = 15;
 
-    public ArrayList<Step> steps;
+    public ArrayList<Step> steps = new ArrayList<>();
 
     private static JSONParser parser = new JSONParser();
 
@@ -47,10 +47,12 @@ public class MapScreen extends Screen implements KeyListener {
 
     ScheduledExecutorService executor;
 
-    public void setDestination(String destination) {
-        steps = getSteps(Directions.ORIGIN, destination, Directions.REGION, Directions.MODE);
+    public void setDestination() {
+        steps = getSteps(lat + "," + lon, KeyboardScreen.getInstance().output, Directions.REGION, Directions.MODE);
         path = getPolyLine(steps);
         img = MapView.updateImage(lat, lon, zoom, "370x635", path);
+        System.out.println("Distance: " + getDistance() + " miles\nDuration: " + getDuration()+ " mins");
+
     }
 
     private MapScreen(ScreenManager sm) {
@@ -78,8 +80,8 @@ public class MapScreen extends Screen implements KeyListener {
                 if (!SatelliteScreen.getInstance().positionGeo.get(2).toUpperCase().equals("EAST"))
                     lon *= -1;
             } else {
-                lon = 0;
-                lat = 0;
+//                lon = 0;
+//                lat = 0;
             }
             img = MapView.updateImage(lat, lon, zoom, "370x635", path);
             label.setIcon(new ImageIcon(img));
@@ -93,10 +95,9 @@ public class MapScreen extends Screen implements KeyListener {
                 double distance = Math.sqrt((x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2));
 
 
-                if (distance < 0.0006 && !s.said) {
-                    test = new Thread(() -> SpeechScreen.generateSpeechSound(s.instruction, "english"));
+                if (distance < 0.0005 && !s.said) {
+                    test = new Thread(() -> SpeechScreen.generateSpeechSound(s.instruction, SpeechScreen.getLanguage()));
                     test.start();
-                    System.out.println("Say: " + s.instruction);
                     s.said = true;
                     break;
                 }
@@ -120,12 +121,12 @@ public class MapScreen extends Screen implements KeyListener {
         img = MapView.updateImage(lat, lon, zoom, "370x635", path);
         label.setIcon(new ImageIcon(img));
 
-        setDestination(Directions.DESTINATION);
+        if (KeyboardScreen.getInstance().output != "")
+            setDestination();
 
         // Testing direction speech output
-
         executor = Executors.newScheduledThreadPool(1);
-        executor.scheduleAtFixedRate(updateMap, 0, 3, TimeUnit.SECONDS);
+        executor.scheduleAtFixedRate(updateMap, 0, 1, TimeUnit.SECONDS);
 
         addKeyListener(this);
     }
@@ -198,9 +199,6 @@ public class MapScreen extends Screen implements KeyListener {
             obj = (JSONObject) parser.parse(s);
         } catch (ParseException e) {
             e.printStackTrace();
-//            ArrayList<Step> error = new ArrayList<>();
-//            error.add(new Step(-999,-999,999,999,"ERR0R",""));
-//            return error;
         }
         JSONObject jsonObject = obj;
         JSONArray arr = (JSONArray) ((JSONObject) ((JSONArray) ((JSONObject) ((JSONArray) jsonObject.get("routes")).get(0)).get("legs")).get(0)).get("steps");
@@ -210,7 +208,7 @@ public class MapScreen extends Screen implements KeyListener {
 
         for (int i = 0; i < size; i++) {
             JSONObject o = (JSONObject) arr.get(i);
-            //Blah blah blah...
+
             JSONObject start_loc = (JSONObject) o.get("start_location");
             double s_lng = (double) start_loc.get("lng");
             double s_lat = (double) start_loc.get("lat");
@@ -219,8 +217,11 @@ public class MapScreen extends Screen implements KeyListener {
             double e_lng = (double) end_loc.get("lng");
             double e_lat = (double) end_loc.get("lat");
 
+            long distance = (long) ((JSONObject) o.get("distance")).get("value");
+            int duration = Integer.valueOf(((JSONObject) o.get("distance")).get("value").toString());
             String instructions = (String) o.get("html_instructions");
-            Step step = new Step(s_lat, s_lng, e_lat, e_lng, instructions, overview_polyline);
+
+            Step step = new Step(s_lat, s_lng, e_lat, e_lng, instructions, overview_polyline, distance, duration);
             steps.add(step);
 
         }
@@ -238,7 +239,6 @@ public class MapScreen extends Screen implements KeyListener {
 
     @Override
     public void keyPressed(KeyEvent e) {
-        System.out.println("Key Pressed");
         if (e.getKeyCode() == KeyEvent.VK_W) {
             lat += 0.0001;
         }
@@ -257,20 +257,36 @@ public class MapScreen extends Screen implements KeyListener {
     public void keyReleased(KeyEvent e) {
 
     }
+
+    public double getDistance() {
+        long temp = 0;
+        for (Step s : steps) temp += s.distance;
+        return temp * 0.00062137;
+    }
+
+    public double getDuration() {
+        long temp = 0;
+        for (Step s : steps) temp += s.duration;
+        return temp / 60;
+    }
 }
 
 class Step {
     Location start_location;
     String instruction;
     String polyline;
+    long distance;
+    int duration;
     Location end_location;
     boolean said = false;
 
-    public Step(double s_lat, double s_lng, double e_lat, double e_lng, String instruction, String polyline) {
+    public Step(double s_lat, double s_lng, double e_lat, double e_lng, String instruction, String polyline, long distance, int duration) {
         start_location = new Location(s_lat, s_lng);
         end_location = new Location(e_lat, e_lng);
         this.instruction = instruction.replaceAll("\\<.*?>", "");
         this.polyline = polyline;
+        this.distance = distance;
+        this.duration = duration;
     }
 
     @Override
@@ -290,14 +306,6 @@ class Location {
     public Location(double lat, double lng) {
         this.lat = lat;
         this.lng = lng;
-    }
-
-    @Override
-    public String toString() {
-        return "Location{" +
-                "lat=" + lat +
-                ", lng=" + lng +
-                '}';
     }
 
     @Override
