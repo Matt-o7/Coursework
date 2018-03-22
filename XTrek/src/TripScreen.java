@@ -20,12 +20,12 @@ public class TripScreen extends Screen {
     public double duration = MapScreen.getDistance();
     public String time = Double.toString(duration);
     
-    public String speed = Double.toString(trip_odem/duration);
+    public String speed = Double.toString(trip_odem/(duration*60)); //
     
     
     JLabel screen = new JLabel();
     JLabel j_odem = new JLabel(odem + " km");
-    JLabel j_speed = new JLabel(speed + " m/h");
+    JLabel j_speed = new JLabel(speed + " k/h");
     JLabel j_time = new JLabel(time + " mins");
 
     private TripScreen(ScreenManager sm) {
@@ -96,7 +96,43 @@ public class TripScreen extends Screen {
     }
 
     void showScreen() {
+    	trip_odem = MapScreen.getDistance();
+        odem = Double.toString(trip_odem);
+        duration = MapScreen.getDistance();
+        time = Double.toString(duration);
+        speed = Double.toString(trip_odem/(duration*60)); //
+    	
+    	switch (SpeechScreen.getLanguage()) {
+        case "english":
+        	screen.setIcon(new ImageIcon(getClass().getResource("/images/tripComputerScreen.png")));
+            break;
+        case "french":
+        	screen.setIcon(new ImageIcon(getClass().getResource("/images/tripComputerScreenFrench.png")));
+            break;
+        case "german":
+        	screen.setIcon(new ImageIcon(getClass().getResource("/images/tripComputerScreenGerman.png")));
+            break;
+        case "italian":
+        	screen.setIcon(new ImageIcon(getClass().getResource("/images/tripComputerScreenItalian.png")));
+            break;
+        case "spanish":
+        	screen.setIcon(new ImageIcon(getClass().getResource("/images/tripComputerScreenSpanish.png")));
+            break;
+        default:
+        	screen.setIcon(new ImageIcon(getClass().getResource("/images/tripComputerScreen.png")));
+    }
+        screen.setBounds(87, 224, 187, 232);
         
+        j_odem.setBounds(117, 269, TEXT_WIDTH, TEXT_HEIGHT);
+        
+        j_speed.setBounds(117, 344, TEXT_WIDTH, TEXT_HEIGHT);
+        
+        j_time.setBounds(117, 416, TEXT_WIDTH, TEXT_HEIGHT);
+    
+        add(j_odem);
+        add(j_speed);
+        add(j_time);
+        add(screen);
     }
 
 
