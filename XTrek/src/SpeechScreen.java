@@ -188,6 +188,7 @@ public class SpeechScreen extends Screen{
             case "Mtwy": return "Motorway";
             case "Sq": return "Square";
             case "St": return "Street";
+            case "N": return "North";
             default: return word;
         }
     }
