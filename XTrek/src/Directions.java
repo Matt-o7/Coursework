@@ -1,4 +1,5 @@
 import java.net.URLEncoder;
+
 /*
  * Directions using the Google Maps APIs.
  *
@@ -7,46 +8,59 @@ import java.net.URLEncoder;
  * David Wakeling, 2018.
  */
 public class Directions {
-    final static String ORIGIN      = "The Forum, Exeter University";
+    final static String ORIGIN = "The Forum, Exeter University";
     final static String DESTINATION = "Cathedral Green, Exeter";
-    final static String REGION      = "uk";
-    final static String MODE        = "walking"; /* "driving" */
+    final static String REGION = "uk";
+    final static String MODE = "walking"; /* "driving" */
+
     /*
      * Read directions.
      */
-    static byte[] readDirections( String origin
+    static byte[] readDirections(String origin
             , String destination
             , String region
-            , String mode ) {
+            , String mode) {
         try {
-            final String encDestination = URLEncoder.encode( DESTINATION, "UTF-8" );
+            final String encDestination = URLEncoder.encode(DESTINATION, "UTF-8");
             final String method = "GET";
+            final String lang;
+            switch (SpeechScreen.getLanguage()) {
+                case "english":
+                    lang = "en";
+                    break;
+                case "french":
+                    lang = "fr";
+                    break;
+                case "german":
+                    lang = "de";
+                    break;
+                case "italian":
+                    lang = "it";
+                    break;
+                case "spanish":
+                    lang = "es";
+                    break;
+                default:
+                    lang = "en";
+            }
             final String url
-                    = ( "https://maps.googleapis.com/maps/api/directions/json"
-                    + "?" + "origin"      + "=" + origin
+                    = ("https://maps.googleapis.com/maps/api/directions/json"
+                    + "?" + "origin" + "=" + origin
                     + "&" + "destination" + "=" + encDestination
-                    + "&" + "region"      + "=" + region
-                    + "&" + "mode"        + "=" + mode
-                    + "&" + "key"         + "=" + "AIzaSyDDbfI4zefWjAZ5NpNdFLGPhbw1YJjKVIo"
-                    + "&language=" + SpeechScreen.getLanguage().substring(0,1)
+                    + "&" + "region" + "=" + region
+                    + "&" + "mode" + "=" + mode
+                    + "&" + "key" + "=" + "AIzaSyDDbfI4zefWjAZ5NpNdFLGPhbw1YJjKVIo"
+                    + "&language=" + lang
             );
             final byte[] body
                     = {};
             final String[][] headers
                     = {};
-            byte[] response = HttpConnect.httpConnect( method, url, headers, body );
+            byte[] response = HttpConnect.httpConnect(method, url, headers, body);
             return response;
-        } catch ( Exception ex ) {
-            System.out.println( ex ); System.exit( 1 ); return null;
-        }
-    }
-
-    /*
-     * Print directions.
-     */
-    static void printDirections( byte[] dirs ) {
-        for ( int i = 0; i < dirs.length; i++ ) {
-            System.out.print( (char) dirs[ i ] );
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return null;
         }
     }
 

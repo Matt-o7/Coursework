@@ -121,8 +121,6 @@ public class SpeechScreen extends Screen{
 
 
         if (!language.equals("off")) {
-            String filePathString = "res/audio/" + "command" + ".wav";
-
             switch (language) {
                 case "english":
                     speech = Speech.generateSpeech(token, toBeSaid, "en-US"

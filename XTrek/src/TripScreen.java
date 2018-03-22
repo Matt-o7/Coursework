@@ -1,5 +1,6 @@
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
+
 /**
  * The TripScreen class manages the TripComputer page in the XTrek.
  *
@@ -49,13 +50,13 @@ public class TripScreen extends Screen {
 
     }
 
-    static TripScreen getInstance(){
+    static TripScreen getInstance() {
         /*
          * Returns the single instance of TripScreen
          *
          * @return the instance of TripScreen
          */
-        if(tripInstance == null){
+        if (tripInstance == null) {
             tripInstance = new TripScreen(sm);
         }
         return tripInstance;
@@ -77,7 +78,7 @@ public class TripScreen extends Screen {
     }
 
     void showScreen() {
-        
+
     }
 
 
