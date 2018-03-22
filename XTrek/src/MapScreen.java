@@ -5,7 +5,10 @@ import org.json.simple.parser.ParseException;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
+import java.security.Key;
 import java.util.ArrayList;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -14,7 +17,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * @author Dennis Harrop
  */
-public class MapScreen extends Screen {
+public class MapScreen extends Screen implements KeyListener {
     private static MapScreen ms;
 
     private BufferedImage img;
@@ -31,8 +34,6 @@ public class MapScreen extends Screen {
     private final int DOT_OFFSET_Y = 15;
 
     public ArrayList<Step> steps;
-
-    Location prev, cur;
 
     private static JSONParser parser = new JSONParser();
 
@@ -60,15 +61,47 @@ public class MapScreen extends Screen {
         add(label);
         CENTER_X = sm.getWidth() / 2;
         CENTER_Y = sm.getHeight() / 2;
+
+        sm.addKeyListener(this);
+        sm.setFocusable(true);
+        sm.requestFocus();
     }
 
     Runnable updateMap = new Runnable() {
         @Override
         public void run() {
-            if (prev.lat == lat && prev.lng == lon)
-                return;
+            if (SatelliteScreen.getInstance().positionGeo.size() >= 4) {
+                lon = Double.valueOf(SatelliteScreen.getInstance().positionGeo.get(1));
+                if (!SatelliteScreen.getInstance().positionGeo.get(0).toUpperCase().equals("NORTH"))
+                    lon *= -1;
+                lat = Double.valueOf(SatelliteScreen.getInstance().positionGeo.get(3));
+                if (!SatelliteScreen.getInstance().positionGeo.get(2).toUpperCase().equals("EAST"))
+                    lon *= -1;
+            } else {
+                lon = 0;
+                lat = 0;
+            }
             img = MapView.updateImage(lat, lon, zoom, "370x635", path);
             label.setIcon(new ImageIcon(img));
+            for (Step s : steps) {
+                double x1 = s.start_location.lng;
+                double x2 = lon;
+
+                double y1 = s.start_location.lat;
+                double y2 = lat;
+
+                double distance = Math.sqrt((x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2));
+
+
+                if (distance < 0.0006 && !s.said) {
+                    test = new Thread(() -> SpeechScreen.generateSpeechSound(s.instruction, "english"));
+                    test.start();
+                    System.out.println("Say: " + s.instruction);
+                    s.said = true;
+                    break;
+                }
+
+            }
             sm.repaint();
         }
     };
@@ -90,11 +123,11 @@ public class MapScreen extends Screen {
         setDestination(Directions.DESTINATION);
 
         // Testing direction speech output
-        test = new Thread(() -> SpeechScreen.generateSpeechSound(steps.get(0).instruction, "english"));
-        test.start();
 
         executor = Executors.newScheduledThreadPool(1);
         executor.scheduleAtFixedRate(updateMap, 0, 3, TimeUnit.SECONDS);
+
+        addKeyListener(this);
     }
 
     @Override
@@ -123,6 +156,7 @@ public class MapScreen extends Screen {
         zoom++;
         img = MapView.updateImage(lat, lon, zoom, "370x635", path);
         label.setIcon(new ImageIcon(img));
+        sm.requestFocus();
     }
 
     @Override
@@ -135,6 +169,7 @@ public class MapScreen extends Screen {
         zoom--;
         img = MapView.updateImage(lat, lon, zoom, "370x635", path);
         label.setIcon(new ImageIcon(img));
+        sm.requestFocus();
     }
 
     @Override
@@ -195,6 +230,33 @@ public class MapScreen extends Screen {
     public static String getPolyLine(ArrayList<Step> steps) {
         return steps.get(0).polyline;
     }
+
+    @Override
+    public void keyTyped(KeyEvent e) {
+
+    }
+
+    @Override
+    public void keyPressed(KeyEvent e) {
+        System.out.println("Key Pressed");
+        if (e.getKeyCode() == KeyEvent.VK_W) {
+            lat += 0.0001;
+        }
+        if (e.getKeyCode() == KeyEvent.VK_S) {
+            lat -= 0.0001;
+        }
+        if (e.getKeyCode() == KeyEvent.VK_A) {
+            lon -= 0.0001;
+        }
+        if (e.getKeyCode() == KeyEvent.VK_D) {
+            lon += 0.0001;
+        }
+    }
+
+    @Override
+    public void keyReleased(KeyEvent e) {
+
+    }
 }
 
 class Step {
@@ -202,6 +264,7 @@ class Step {
     String instruction;
     String polyline;
     Location end_location;
+    boolean said = false;
 
     public Step(double s_lat, double s_lng, double e_lat, double e_lng, String instruction, String polyline) {
         start_location = new Location(s_lat, s_lng);

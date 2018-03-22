@@ -24,7 +24,7 @@ class SatelliteScreen extends Screen {
     private static final String NO_DATA = "N";
 
     /* Initialise array containing a string indicating no GPS data has been retrieved yet */
-    List<String> positionGeo = new ArrayList<String>(Arrays.asList(NO_DATA));
+    List<String> positionGeo = new ArrayList<>(Arrays.asList(NO_DATA));
 
     /* Displays information including GPS to the user.
      * Uses two JLabels and specified by the client.
@@ -92,7 +92,7 @@ class SatelliteScreen extends Screen {
          */
 
         /* Ensuring only one instance is made. */
-        if(satelliteInstance == null) {
+        if (satelliteInstance == null) {
             satelliteInstance = new SatelliteScreen(sm);
         }
 
@@ -122,18 +122,21 @@ class SatelliteScreen extends Screen {
 
 
     @Override
-    void plus() {}
+    void plus() {
+    }
 
 
     @Override
-    void minus() {}
+    void minus() {
+    }
 
 
     @Override
-    void select() {}
+    void select() {
+    }
 
 
-    void displayPosition (JLabel positionOne, JLabel positionTwo) {
+    void displayPosition(JLabel positionOne, JLabel positionTwo) {
         /**
          * Processes and determines what information the GPS device has returned, and apply
          * the data, allowing the data to be displayed a certain way depending on the contents of the data.
