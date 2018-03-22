@@ -75,7 +75,7 @@ public class MapScreen extends Screen implements KeyListener {
             if (prev.lat == lat && prev.lng == lng) {
                 return;
             } else {
-//                updateRot();
+                updateRot();
                 prev.lng = lng;
                 prev.lat = lat;
             }
@@ -87,8 +87,8 @@ public class MapScreen extends Screen implements KeyListener {
                 if (!SatelliteScreen.getInstance().positionGeo.get(2).toUpperCase().equals("EAST"))
                     lng *= -1;
             } else {
-//                lng = 0;
-//                lat = 0;
+                lng = 0;
+                lat = 0;
             }
             img = MapView.updateImage(lat, lng, zoom, "370x635", path);
             label.setIcon(new ImageIcon(img));
