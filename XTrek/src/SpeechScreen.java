@@ -121,6 +121,8 @@ public class SpeechScreen extends Screen{
 
 
         if (!language.equals("off")) {
+            String filePathString = "res/audio/" + "command" + ".wav";
+
             switch (language) {
                 case "english":
                     speech = Speech.generateSpeech(token, toBeSaid, "en-US"
@@ -188,7 +190,6 @@ public class SpeechScreen extends Screen{
             case "Mtwy": return "Motorway";
             case "Sq": return "Square";
             case "St": return "Street";
-            case "N": return "North";
             default: return word;
         }
     }
