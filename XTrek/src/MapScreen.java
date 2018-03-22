@@ -33,7 +33,7 @@ public class MapScreen extends Screen implements KeyListener {
     private final int DOT_DIAM = 10;
     private final int DOT_OFFSET_Y = 15;
 
-    public ArrayList<Step> steps = new ArrayList<>();
+    public static ArrayList<Step> steps = new ArrayList<>();
 
     private static JSONParser parser = new JSONParser();
 
@@ -264,7 +264,7 @@ public class MapScreen extends Screen implements KeyListener {
 
     }
 
-    public double getDistance() {
+    public static double getDistance() {
         long temp = 0;
         for (Step s : steps) temp += s.distance;
         return temp * 0.00062137;
