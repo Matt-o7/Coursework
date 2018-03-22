@@ -22,8 +22,8 @@ public class MapScreen extends Screen implements KeyListener {
     private BufferedImage img;
     JLabel label;
     int zoom = 9;
-    double lat = 50.7371369, lon = -3.5351475;
-    Location prev = new Location(lat, lon);
+    double lat = 50.7371369, lng = -3.5351475;
+    Location prev = new Location(lat, lng);
     int rot;
     String path;
     Thread test;
@@ -48,16 +48,16 @@ public class MapScreen extends Screen implements KeyListener {
     ScheduledExecutorService executor;
 
     public void setDestination() {
-        steps = getSteps(lat + "," + lon, KeyboardScreen.getInstance().output, Directions.REGION, Directions.MODE);
+        steps = getSteps(lat + "," + lng, KeyboardScreen.getInstance().output, Directions.REGION, Directions.MODE);
         path = getPolyLine(steps);
-        img = MapView.updateImage(lat, lon, zoom, "370x635", path);
-        System.out.println("Distance: " + getDistance() + " miles\nDuration: " + getDuration()+ " mins");
+        img = MapView.updateImage(lat, lng, zoom, "370x635", path);
+        System.out.println("Distance: " + getDistance() + " miles\nDuration: " + getDuration() + " mins");
 
     }
 
     private MapScreen(ScreenManager sm) {
         super(sm);
-        img = MapView.updateImage(lat, lon, zoom, "370x635", path);
+        img = MapView.updateImage(lat, lng, zoom, "370x635", path);
         setBackground(new Color(163, 204, 255));
         label = new JLabel(new ImageIcon(img));
         add(label);
@@ -72,22 +72,29 @@ public class MapScreen extends Screen implements KeyListener {
     Runnable updateMap = new Runnable() {
         @Override
         public void run() {
+            if (prev.lat == lat && prev.lng == lng) {
+                return;
+            } else {
+//                updateRot();
+                prev.lng = lng;
+                prev.lat = lat;
+            }
             if (SatelliteScreen.getInstance().positionGeo.size() >= 4) {
-                lon = Double.valueOf(SatelliteScreen.getInstance().positionGeo.get(1));
+                lng = Double.valueOf(SatelliteScreen.getInstance().positionGeo.get(1));
                 if (!SatelliteScreen.getInstance().positionGeo.get(0).toUpperCase().equals("NORTH"))
-                    lon *= -1;
+                    lng *= -1;
                 lat = Double.valueOf(SatelliteScreen.getInstance().positionGeo.get(3));
                 if (!SatelliteScreen.getInstance().positionGeo.get(2).toUpperCase().equals("EAST"))
-                    lon *= -1;
+                    lng *= -1;
             } else {
-//                lon = 0;
+//                lng = 0;
 //                lat = 0;
             }
-            img = MapView.updateImage(lat, lon, zoom, "370x635", path);
+            img = MapView.updateImage(lat, lng, zoom, "370x635", path);
             label.setIcon(new ImageIcon(img));
             for (Step s : steps) {
                 double x1 = s.start_location.lng;
-                double x2 = lon;
+                double x2 = lng;
 
                 double y1 = s.start_location.lat;
                 double y2 = lat;
@@ -107,18 +114,17 @@ public class MapScreen extends Screen implements KeyListener {
         }
     };
 
-//    private int getRot() {
-//        Location cur = new Location(lat, lon);
-//        if (cur.equals(prev))
-//            return 0;
-//        double x = Math.abs(prev.lat - lat);
-//        double y = Math.abs(prev.lng - lon);
-//
-//    }
+    private void updateRot() {
+        Location cur = new Location(lat, lng);
+        double dx = cur.lat - prev.lat;
+        double dy = prev.lng - cur.lng;
+
+        rot = (int) Math.toDegrees(Math.atan2(dy, dx));
+    }
 
     @Override
     void showScreen() {
-        img = MapView.updateImage(lat, lon, zoom, "370x635", path);
+        img = MapView.updateImage(lat, lng, zoom, "370x635", path);
         label.setIcon(new ImageIcon(img));
 
         if (KeyboardScreen.getInstance().output != "")
@@ -155,7 +161,7 @@ public class MapScreen extends Screen implements KeyListener {
             return;
         }
         zoom++;
-        img = MapView.updateImage(lat, lon, zoom, "370x635", path);
+        img = MapView.updateImage(lat, lng, zoom, "370x635", path);
         label.setIcon(new ImageIcon(img));
         sm.requestFocus();
     }
@@ -168,7 +174,7 @@ public class MapScreen extends Screen implements KeyListener {
         }
 
         zoom--;
-        img = MapView.updateImage(lat, lon, zoom, "370x635", path);
+        img = MapView.updateImage(lat, lng, zoom, "370x635", path);
         label.setIcon(new ImageIcon(img));
         sm.requestFocus();
     }
@@ -246,10 +252,10 @@ public class MapScreen extends Screen implements KeyListener {
             lat -= 0.0001;
         }
         if (e.getKeyCode() == KeyEvent.VK_A) {
-            lon -= 0.0001;
+            lng -= 0.0001;
         }
         if (e.getKeyCode() == KeyEvent.VK_D) {
-            lon += 0.0001;
+            lng += 0.0001;
         }
     }
 

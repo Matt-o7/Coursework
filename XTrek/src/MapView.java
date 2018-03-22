@@ -20,6 +20,7 @@ public class MapView extends JFrame {
                 + "&" + "zoom" + "=" + zoom
                 + "&" + "size" + "=" + size
                 + "&" + "path" + "=enc%3A" + path
+                + "&key=AIzaSyD7m5QqyIe2t-IUsWTaP3-b2tLORemEMcc"
         );
         final byte[] body
                 = {};
