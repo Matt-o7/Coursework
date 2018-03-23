@@ -21,7 +21,7 @@ class SatelliteScreen extends Screen {
     /* Creates the Thread to be utilised in retrieving GPS data. */
     Thread oneSatellite;
 
-    private static final String NO_DATA = "N";
+    private static final String NO_DATA = "S";
 
     /* Initialise array containing a string indicating no GPS data has been retrieved yet */
     List<String> positionGeo = new ArrayList<>(Arrays.asList(NO_DATA));
@@ -29,7 +29,7 @@ class SatelliteScreen extends Screen {
     /* Displays information including GPS to the user.
      * Uses two JLabels and specified by the client.
      */
-    public static JLabel positionOne = new JLabel("");
+    private static JLabel positionOne = new JLabel("");
     private static JLabel positionTwo = new JLabel("");
 
     /* Removing magic numbers from deep within the code. */
@@ -38,10 +38,7 @@ class SatelliteScreen extends Screen {
     private final int CO_W = 170;
     private final int CO_H = 300;
     private final int F_S = 18;
-    private final int FF_S = 10;
 
-    private final int N_ONEX = 103;
-    private final int N_TWOX = 113;
     private final int N_TWOY = 200;
 
     private final int S_TWOX = 118;
@@ -56,7 +53,6 @@ class SatelliteScreen extends Screen {
     private final int THIRD_ELEM = 2;
     private final int FOURTH_ELEM = 3;
 
-
     private SatelliteScreen(ScreenManager sm) {
         /**
          * Determines the base details of the screen
@@ -65,13 +61,13 @@ class SatelliteScreen extends Screen {
          * @param sm, which is of type ScreenManager.
          * @return the base of the SatelliteScreen which will be
          *         displayed when called by ScreenManager.
-         * @exception ClassNotFoundException where GeoPosition or Thread classes cannot be found.
+         * @exception ClassNotFoundException when GeoPosition or Thread classes cannot be found.
          * @see ClassNotFoundException.
          */
 
         super(sm);
 
-        /* Prevents from using any specific layout (i.e grid). */
+        /* Prevents screen from using any specific layout (i.e grid). */
         setLayout(null);
 
         /* Initialises and starts the thread which will retrieve GPS data consistently. */
@@ -79,7 +75,6 @@ class SatelliteScreen extends Screen {
         oneSatellite.start();
 
     }
-
 
     static SatelliteScreen getInstance() {
         /**
@@ -107,7 +102,7 @@ class SatelliteScreen extends Screen {
          * tab is selected on the home screen.
          *
          * @param args Unused.
-         * @return the entire SatelliteScreen required, containing information (i.e GPS) which the user may use.
+         * @return the entire SatelliteScreen required, containing information (i.e GPS), which the user may use.
          * @exception IOExcetion since the displayPosition method may not return anything.
          * @see IOException.
          */
@@ -115,7 +110,11 @@ class SatelliteScreen extends Screen {
         /* Calls a function which will determine which information is to be displayed to the user. */
         displayPosition(positionOne, positionTwo);
 
-        /* Adds the two JLabels to the screen so they are visible to the user. */
+        /* Determines the style of the text displayed to the user. */
+        positionOne.setFont(new Font("Calibri", Font.BOLD, F_S));
+        positionTwo.setFont(new Font("Calibri", Font.BOLD, F_S));
+
+        /* Adds two JLabels to the frame so they are visible to the user. */
         add(positionOne, BorderLayout.CENTER);
         add(positionTwo, BorderLayout.CENTER);
     }
@@ -138,8 +137,8 @@ class SatelliteScreen extends Screen {
 
     void displayPosition(JLabel positionOne, JLabel positionTwo) {
         /**
-         * Processes and determines what information the GPS device has returned, and apply
-         * the data, allowing the data to be displayed a certain way depending on the contents of the data.
+         * Processes and determines what information the GPS device has returned and apply
+         * the data, allowing the data to be displayed a certain way depending on the its contents.
          *
          * @param positionOne a JLabel containing GPS data, which will be displayed to the user.
          * @param positionTwo a JLabel containing GPS data, which will be displayed to the user.
@@ -149,19 +148,9 @@ class SatelliteScreen extends Screen {
          */
 
         /* Switch used instead of if else to optimise program by controlling execution of statements.
-         * By determining the contents of a list.
+         * Determines the contents of a list.
          */
         switch (positionGeo.get(FIRST_ELEM)) {
-
-            /* If no GPS data has been retrieved and processed yet. */
-            case "N":
-                positionOne.setText("PROCESSING, PLEASE GO BACK");
-                positionTwo.setText("TO MENU AND TRY AGAIN");
-                positionOne.setBounds(N_ONEX, CO_Y, CO_W, CO_H);
-                positionTwo.setBounds(N_TWOX, N_TWOY, CO_W, CO_H);
-                positionOne.setFont(new Font("Calibri", Font.BOLD, FF_S));
-                positionTwo.setFont(new Font("Calibri", Font.BOLD, FF_S));
-                break;
 
             /* If the GPS dongle has not been able to retrieve longitude and latitude values. */
             case "S":
@@ -169,8 +158,6 @@ class SatelliteScreen extends Screen {
                 positionTwo.setText("DETERMINED");
                 positionOne.setBounds(CO_X, CO_Y, CO_W, CO_H);
                 positionTwo.setBounds(S_TWOX, N_TWOY, CO_W, CO_H);
-                positionOne.setFont(new Font("Calibri", Font.BOLD, F_S));
-                positionTwo.setFont(new Font("Calibri", Font.BOLD, F_S));
                 break;
 
             /* Handles the case when the OSXUblox or GPS device isn't inserted. */
@@ -179,22 +166,19 @@ class SatelliteScreen extends Screen {
                 positionTwo.setText("INSERTED");
                 positionOne.setBounds(CO_X, CO_Y, CO_W, CO_H);
                 positionTwo.setBounds(D_TWOX, N_TWOY, CO_W, CO_H);
-                positionOne.setFont(new Font("Calibri", Font.BOLD, F_S));
-                positionTwo.setFont(new Font("Calibri", Font.BOLD, F_S));
                 break;
 
-            /* Occurs when GPS data, including longitude and latitude values, has been successfully retrieved and process. */
+            /* Occurs when GPS data, including longitude and latitude values, have been successfully retrieved and processed. */
             default:
-                /* Display the GPS data in a format identical to the assessment document. (i.e aligned to the right). */
+                /* Displays the GPS data in a format similar to the assessment document. (i.e aligned to the right). */
                 positionOne.setText(positionGeo.get(FIRST_ELEM) + " " + (positionGeo.get(SECOND_ELEM)));
                 positionTwo.setText(positionGeo.get(THIRD_ELEM) + " " + (positionGeo.get(FOURTH_ELEM)));
                 positionOne.setBounds(DE_ONEX, DE_ONEY, CO_W, CO_H);
                 positionTwo.setBounds(DE_TWOX, N_TWOY, CO_W, CO_H);
-                positionOne.setFont(new Font("Calibri", Font.BOLD, F_S));
-                positionTwo.setFont(new Font("Calibri", Font.BOLD, F_S));
                 break;
 
         }
+
     }
 
 }
