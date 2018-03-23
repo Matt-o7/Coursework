@@ -42,10 +42,11 @@ public class KeyboardScreen extends Screen {
     @Override
     void plus() {
         if (selected == ']' || selected == '%') {
+        	//Do nothing, end of keyboard. ] = NEXT, % = DEL
         } else {
             selected++;
-            if (selected == '\\') selected = ']';
-            if (selected == ':') selected = '#';
+            if (selected == '\\') selected = ']'; //Switch char to work with the image naming and sequence.
+            if (selected == ':') selected = '#'; //Switch char to work with the image naming and sequence.
             ImageIcon icon = new ImageIcon(getClass().getResource("images/keyboard/backgroundAlphabet" + selected + ".png"));
             screen.setIcon(icon);
         }
@@ -54,9 +55,10 @@ public class KeyboardScreen extends Screen {
     @Override
     void minus() {
         if (selected == 'A' || selected == '1') {
+        	//Do nothing, end of keyboard
         } else {
-            if (selected == ']') selected = '\\';
-            if (selected == '#') selected = ':';
+            if (selected == ']') selected = '\\'; //Switch char to work with the image naming and sequence.
+            if (selected == '#') selected = ':'; //Switch char to work with the image naming and sequence.
             selected--;
             ImageIcon icon = new ImageIcon(getClass().getResource("/images/keyboard/backgroundAlphabet" + selected + ".png"));
             screen.setIcon(icon);
