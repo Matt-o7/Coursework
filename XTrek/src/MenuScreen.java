@@ -239,6 +239,7 @@ class MenuScreen extends Screen {
         aboutLabel.setBounds(RIGHT_X, BOTTOM_ROW_Y, LABEL_WIDTH, LABEL_HEIGHT);
         add(aboutLabel);
 
+        //Initialises the Satellite and Speech screen to start the threads
         SatelliteScreen.getInstance();
         SpeechScreen.getInstance();
     }

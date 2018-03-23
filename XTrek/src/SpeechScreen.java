@@ -108,6 +108,11 @@ public class SpeechScreen extends Screen{
 
     }
 
+    /**
+     * Generates the sound of the speech from a given String and reads it out loud
+     * @param toBeSaid The given String to be said out loud
+     * @param language The language in which it should be read
+     */
     public static void generateSpeechSound(String toBeSaid, String language) {
 
         String[] words = toBeSaid.split("\\s+");
@@ -149,6 +154,11 @@ public class SpeechScreen extends Screen{
 
     }
 
+    /**
+     * Gets the currently selected language
+     *
+     * @return a String of the selected language
+     */
     public static String getLanguage() {
         if (hasInitialised) {
             if (!english.isVisible()) {
@@ -169,6 +179,12 @@ public class SpeechScreen extends Screen{
         }
     }
 
+    /**
+     * Changes an abbreviation to its full word
+     *
+     * @param word Is the given abbreviation
+     * @return A String of the full word
+     */
     private static String abbreviation(String word){
         switch(word){
             case "Rd": return "Road";
@@ -206,28 +222,32 @@ public class SpeechScreen extends Screen{
 
     }
 
+    /**
+     * Returns the single instance of SpeechScreen
+     *
+     * @return the instance of SpeechScreen
+     */
     static SpeechScreen getInstance() {
-        /*
-         * Returns the single instance of SpeechScreen
-         *
-         * @return the instance of SpeechScreen
-         */
         if (speechInstance == null) {
             speechInstance = new SpeechScreen(sm);
         }
         return speechInstance;
     }
 
+    /**
+     * Called when the SpeechScreen shows on the XTrek Screen
+     */
     @Override
     void showScreen() {
         setBackground(Color.BLACK);
     }
 
+    /**
+     * Highlights the previous language
+     */
     @Override
     void plus() {
 
-
-        //Makes the selection switch to the last one
         if (!off.isVisible()) {
             off.setVisible(true);
             spanish.setVisible(false);
@@ -250,10 +270,12 @@ public class SpeechScreen extends Screen{
 
     }
 
+    /**
+     * Highlights the next language
+     */
     @Override
     void minus() {
 
-        //Makes the selection switch to the next one
         if (!off.isVisible()) {
             off.setVisible(true);
             english.setVisible(false);
@@ -276,6 +298,9 @@ public class SpeechScreen extends Screen{
 
     }
 
+    /**
+     * Selects the highlighted language
+     */
     @Override
     void select() {
 
