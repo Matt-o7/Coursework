@@ -14,18 +14,17 @@ public class TripScreen extends Screen {
     
     
 
-    public double trip_odem = MapScreen.getDistance();
-    public String odem = Double.toString(trip_odem);
+    private double trip_odem = MapScreen.getDistance();
+    private double duration = MapScreen.getDistance();
     
-    public double duration = MapScreen.getDistance();
-    public String time = Double.toString(duration);
-    
-    public String speed = Double.toString(trip_odem/(duration*60)); //
+    private String odem = Double.toString(  Math.round(trip_odem * 100) / 100);
+    private String time = Double.toString(  Math.round(duration * 100) / 100);
+    private String speed = Double.toString( Math.round( (trip_odem/(duration*60)) * 100) / 100); //
     
     
     JLabel screen = new JLabel();
-    JLabel j_odem = new JLabel(odem + " km");
-    JLabel j_speed = new JLabel(speed + " k/h");
+    JLabel j_odem = new JLabel(odem + " miles");
+    JLabel j_speed = new JLabel(speed + " m/h");
     JLabel j_time = new JLabel(time + " mins");
 
     private TripScreen(ScreenManager sm) {
@@ -97,10 +96,11 @@ public class TripScreen extends Screen {
 
     void showScreen() {
     	trip_odem = MapScreen.getDistance();
-        odem = Double.toString(trip_odem);
-        duration = MapScreen.getDistance();
-        time = Double.toString(duration);
-        speed = Double.toString(trip_odem/(duration*60)); //
+    	duration = MapScreen.getDistance();
+       
+    	odem = Double.toString(  Math.round(trip_odem * 100) / 100);
+        time = Double.toString(  Math.round(duration * 100) / 100);
+        speed = Double.toString( Math.round( (trip_odem/(duration*60)) * 100) / 100); //
     	
     	switch (SpeechScreen.getLanguage()) {
         case "english":
