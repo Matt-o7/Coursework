@@ -51,7 +51,6 @@ public class MapScreen extends Screen implements KeyListener {
         steps = getSteps(lat + "," + lng, KeyboardScreen.getInstance().output, Directions.REGION, Directions.MODE);
         path = getPolyLine(steps);
         img = MapView.updateImage(lat, lng, zoom, "370x635", path);
-        System.out.println("Distance: " + getDistance() + " miles\nDuration: " + getDuration() + " mins");
 
     }
 
@@ -73,9 +72,9 @@ public class MapScreen extends Screen implements KeyListener {
         @Override
         public void run() {
 
-                updateRot();
-                prev.lng = lng;
-                prev.lat = lat;
+//            updateRot();
+            prev.lng = lng;
+            prev.lat = lat;
 
             if (SatelliteScreen.getInstance().positionGeo.size() >= 4) {
                 lat = Double.valueOf(SatelliteScreen.getInstance().positionGeo.get(0));
@@ -84,9 +83,6 @@ public class MapScreen extends Screen implements KeyListener {
                 lng = Double.valueOf(SatelliteScreen.getInstance().positionGeo.get(2));
                 if (!SatelliteScreen.getInstance().positionGeo.get(3).toUpperCase().equals("E"))
                     lng *= -1;
-            } else {
-                lng = 0;
-                lat = 0;
             }
 
             img = MapView.updateImage(lat, lng, zoom, "370x635", path);
@@ -128,13 +124,14 @@ public class MapScreen extends Screen implements KeyListener {
         img = MapView.updateImage(lat, lng, zoom, "370x635", path);
         label.setIcon(new ImageIcon(img));
 
-        if (KeyboardScreen.getInstance().output != "")
-            setDestination();
+
 
         // Testing direction speech output
         executor = Executors.newScheduledThreadPool(1);
         executor.scheduleAtFixedRate(updateMap, 0, 1, TimeUnit.SECONDS);
 
+        if (KeyboardScreen.getInstance().output != "")
+            setDestination();
         addKeyListener(this);
     }
 

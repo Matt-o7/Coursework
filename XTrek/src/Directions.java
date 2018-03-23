@@ -21,7 +21,7 @@ public class Directions {
             , String region
             , String mode) {
         try {
-            final String encDestination = URLEncoder.encode(DESTINATION, "UTF-8");
+            final String encDestination = URLEncoder.encode(destination, "UTF-8");
             final String method = "GET";
             final String lang;
             switch (SpeechScreen.getLanguage()) {

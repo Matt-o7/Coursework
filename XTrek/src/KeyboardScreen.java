@@ -67,7 +67,6 @@ public class KeyboardScreen extends Screen {
 
     @Override
     void select() {
-//        System.out.print("Select Button Pressed on Button: ");
         if (selected == '[') {
             //Space Bar
             output = output + " ";

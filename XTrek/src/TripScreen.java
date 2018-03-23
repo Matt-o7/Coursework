@@ -15,7 +15,7 @@ public class TripScreen extends Screen {
     
 
     private double trip_odem = MapScreen.getDistance();
-    private double duration = MapScreen.getDistance();
+    private double duration = MapScreen.getInstance().getDuration();
     
     private String odem = Double.toString(  Math.round(trip_odem * 100) / 100);
     private String time = Double.toString(  Math.round(duration * 100) / 100);
@@ -96,11 +96,11 @@ public class TripScreen extends Screen {
 
     void showScreen() {
     	trip_odem = MapScreen.getDistance();
-    	duration = MapScreen.getDistance();
+    	duration = MapScreen.getInstance().getDuration();
        
-    	odem = Double.toString(  Math.round(trip_odem * 100) / 100);
-        time = Double.toString(  Math.round(duration * 100) / 100);
-        speed = Double.toString( Math.round( (trip_odem/(duration*60)) * 100) / 100); //
+    	odem = String.format ("%.2f", trip_odem);
+        time = String.format ("%.2f", duration);
+        speed = String.format ("%.2f", trip_odem/(duration*60)); //
     	
     	switch (SpeechScreen.getLanguage()) {
         case "english":
